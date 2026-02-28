@@ -205,7 +205,7 @@ export async function exportAsVideo(animationData, { fps = 30, resolution = '720
     playback.height = height;
     const pCtx = playback.getContext('2d');
 
-    const stream = playback.captureStream(0);
+    const stream = playback.captureStream(fps); // Pass target fps directly
 
     let mimeType = 'video/webm;codecs=vp9';
     if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8';
@@ -213,25 +213,36 @@ export async function exportAsVideo(animationData, { fps = 30, resolution = '720
 
     const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 8_000_000 });
     const chunks = [];
-    recorder.ondataavailable = (e) => e.data.size > 0 && chunks.push(e.data);
+    recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+    };
 
-    const stopped = new Promise((res) => { recorder.onstop = res; });
+    const stopped = new Promise((resolve) => { recorder.onstop = resolve; });
 
-    recorder.start();
-    const frameDelay = 1000 / fps;
+    recorder.start(100); // Record in chunks to ensure data flows
+    
+    // Calculate precise frame timing
+    const frameDurationMs = 1000 / fps;
 
     for (let i = 0; i < frames.length; i++) {
+        const frameStart = performance.now();
+        
         pCtx.fillStyle = '#FFFFFF';
         pCtx.fillRect(0, 0, width, height);
         pCtx.drawImage(frames[i], 0, 0);
 
-        const vt = stream.getVideoTracks()[0];
-        if (typeof vt?.requestFrame === 'function') vt.requestFrame();
-
         onProgress?.(40 + Math.round(((i + 1) / frames.length) * 58), 'Encoding video…');
-        await new Promise((r) => setTimeout(r, frameDelay));
+        
+        const frameEnd = performance.now();
+        const drawTime = frameEnd - frameStart;
+        const sleepTime = Math.max(1, frameDurationMs - drawTime);
+        
+        // Wait precisely the duration of the frame to feed it to the recorder in real-time
+        await new Promise((r) => setTimeout(r, sleepTime));
     }
 
+    // Small buffer at end to ensure last frame flushes
+    await new Promise((r) => setTimeout(r, 100));
     recorder.stop();
     await stopped;
 

@@ -1,9 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import lottie from 'lottie-web';
 
-const LottiePlayer = ({ animationData, className }) => {
+import { forwardRef, useImperativeHandle } from 'react';
+
+const LottiePlayer = forwardRef(({ animationData, className, loop = true, autoplay = true, style }, ref) => {
     const containerRef = useRef(null);
     const animRef = useRef(null);
+
+    useImperativeHandle(ref, () => ({
+        getLottie: () => animRef.current
+    }));
 
     useEffect(() => {
         if (!containerRef.current || !animationData) return;
@@ -11,8 +17,8 @@ const LottiePlayer = ({ animationData, className }) => {
         animRef.current = lottie.loadAnimation({
             container: containerRef.current,
             renderer: 'svg',
-            loop: true,
-            autoplay: true,
+            loop: loop,
+            autoplay: autoplay,
             // Pass a clone to lottie since it mutates the object heavily
             animationData: JSON.parse(JSON.stringify(animationData)),
         });
@@ -28,8 +34,11 @@ const LottiePlayer = ({ animationData, className }) => {
         <div
             ref={containerRef}
             className={`w-full h-full flex items-center justify-center ${className || ''}`}
+            style={style}
         />
     );
-};
+});
 
 export default LottiePlayer;
+
+

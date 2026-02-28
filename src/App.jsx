@@ -1,15 +1,93 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Download } from 'lucide-react';
 import PreviewWindow from './components/PreviewWindow';
+import ExportWindowPreview from './components/ExportWindowPreview';
+import LottiePlayer from './components/LottiePlayer';
 import { processLottie, formatBytes } from './utils/lottieProcessor';
+import { exportAsGif, exportAsVideo } from './utils/lottieExporter';
 
 const FOLDER_ICON = new URL('/folder-icon.png', import.meta.url).href;
 const LOGO_MARK   = new URL('/logo-mark.png',   import.meta.url).href;
 const EASE = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
 
-// ─── Logo mark — PNG ───────────────────────────────────────────────────────────
-function LogoMark({ size = 40 }) {
-  return <img src={LOGO_MARK} alt="Lottiney" style={{ width: size, height: size, objectFit: 'contain' }} />;
+// ─── Logo Animation — Interactive ─────────────────────────────────────────────
+import lottie from 'lottie-web';
+
+export function LogoAnimation({ size = 48 }) {
+  const [animData, setAnimData] = useState(null);
+  const containerRef = useRef(null);
+  const animRef = useRef(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    fetch('logo-animation.json')
+      .then(res => res.json())
+      .then(data => setAnimData(data))
+      .catch(err => console.error("Failed to load logo animation", err));
+  }, []);
+
+  const scheduleNext = useCallback(() => {
+    timerRef.current = setTimeout(() => {
+      animRef.current?.goToAndPlay(0, true);
+    }, 9000); // 9s rest
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || !animData) return;
+
+    containerRef.current.innerHTML = '';
+
+    animRef.current = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      animationData: JSON.parse(JSON.stringify(animData)),
+    });
+
+    animRef.current.addEventListener('complete', scheduleNext);
+
+    // Initial trigger
+    timerRef.current = setTimeout(() => {
+      animRef.current?.goToAndPlay(0, true);
+    }, 2500);
+
+    // Provide click-to-play so users can also interact manually
+    const handleClick = () => {
+      clearTimeout(timerRef.current);
+      animRef.current?.goToAndPlay(0, true);
+    };
+
+    const el = containerRef.current;
+    if (el) {
+        el.addEventListener('click', handleClick);
+    }
+
+    return () => {
+      clearTimeout(timerRef.current);
+      if (el) {
+          el.removeEventListener('click', handleClick);
+      }
+      if (animRef.current) {
+        animRef.current.destroy();
+      }
+    };
+  }, [animData, scheduleNext]);
+
+  if (!animData) {
+    return <img src={LOGO_MARK} alt="Lottiney" style={{ width: size, height: size, objectFit: 'contain', display: 'block' }} />;
+  }
+
+  return (
+    <div 
+      ref={containerRef} 
+      onClick={() => {
+        clearTimeout(timerRef.current);
+        animRef.current?.goToAndPlay(0, true);
+      }}
+      style={{ width: size, height: size, cursor: 'pointer', display: 'block' }} 
+    />
+  );
 }
 
 // ─── Animated counter ─────────────────────────────────────────────────────────
@@ -39,6 +117,7 @@ export default function App() {
   const [stats, setStats]                 = useState(null);
   const [isDragging, setIsDragging]       = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
+  const [showExport, setShowExport] = useState(false);
   const fileInputRef = useRef(null);
   const reducePct    = useCountUp(resultVisible ? stats?.reductionPercentage : null, 900);
 
@@ -80,15 +159,51 @@ export default function App() {
     setResultVisible(false);
     setTimeout(() => {
       setAppState('idle'); setOriginalFile(null);
-      setOriginalData(null); setCleanedData(null); setStats(null);
+      setOriginalData(null); setCleanedData(null); setStats(null); setShowExport(false); if(fileInputRef.current) fileInputRef.current.value = '';
     }, 320);
+  };
+
+  const handleExportOptions = async (options, setProgress) => {
+    if (!cleanedData && !originalData) return;
+    const targetData = cleanedData || originalData; // use cleaned if available
+
+    try {
+      let blob;
+      // lottieExporter exports options like fps, resolution, onProgress
+      const exportOptions = { 
+        fps: parseInt(options.fps, 10), 
+        resolution: options.resolution, 
+        transparent: options.transparent,
+        onProgress: (prog) => { if (setProgress) setProgress(prog); }
+      };
+
+      if (options.mode === 'gif') {
+        blob = await exportAsGif(targetData, exportOptions);
+      } else {
+        blob = await exportAsVideo(targetData, exportOptions);
+      }
+
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const baseName = originalFile?.name ? originalFile.name.replace('.json', '') : 'animation';
+      const extension = options.mode === 'gif' ? 'gif' : 'webm';
+      a.download = `${baseName}_${options.fps}fps.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to export: " + err.message);
+    }
   };
 
   const handleDownload = () => {
     if (!cleanedData) return;
     const a = document.createElement('a');
     a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cleanedData));
-    a.download = `clean_${originalFile?.name || 'animation.json'}`;
+    const baseName = originalFile?.name ? originalFile.name.replace('.json', '') : 'animation';
+    a.download = `Clean_${baseName}.json`;
     document.body.appendChild(a); a.click(); a.remove();
   };
 
@@ -109,6 +224,7 @@ export default function App() {
       <div style={{
         width: '100%',
         maxWidth: isDone ? '860px' : '440px',
+        margin: 'auto', // allows scrolling while keeping top/bottom padding
         background: 'linear-gradient(160deg, rgba(255,255,255,0.97) 0%, rgba(255,248,244,0.97) 100%)',
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
@@ -123,7 +239,7 @@ export default function App() {
 
         {/* ── Header ── */}
         <header style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 28 }}>
-          <LogoMark size={48} />
+          <LogoAnimation size={48} />
           <h1 style={{
             margin: '12px 0 6px',
             fontFamily: '"Outfit", sans-serif',
@@ -171,7 +287,7 @@ export default function App() {
         {/* ── Result section ── */}
         <div style={{
           width: '100%', overflow: 'hidden',
-          maxHeight: isDone ? '900px' : '0px',
+          maxHeight: isDone ? '1100px' : '0px',
           opacity: isDone ? 1 : 0,
           transition: [
             `max-height 480ms ${EASE}`,
@@ -210,7 +326,7 @@ export default function App() {
 
           {/* Download */}
           <div style={{
-            marginTop: 28,
+            marginTop: 28, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
             opacity: resultVisible ? 1 : 0,
             transform: resultVisible ? 'translateY(0)' : 'translateY(10px)',
             transition: `opacity 300ms 280ms ${EASE}, transform 360ms 280ms ${EASE}`,
@@ -218,20 +334,61 @@ export default function App() {
             <PhysicsButton onClick={handleDownload} icon={<Download style={{width:20,height:20}} />}>
               Download Lottie
             </PhysicsButton>
+
+            <div style={{
+              overflow: 'hidden',
+              maxHeight: showExport ? '0px' : '40px',
+              opacity: showExport ? 0 : 1,
+              transition: `max-height 300ms ${EASE}, opacity 300ms ${EASE}`,
+              display: 'flex', alignItems: 'center'
+            }}>
+              <button onClick={() => setShowExport(true)} style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontSize: 12, fontWeight: 700, color: '#AFA193', fontFamily: '"Outfit", sans-serif',
+                transition: `color 200ms ${EASE}`, display: 'flex', alignItems: 'center', gap: 4,
+                padding: '4px 8px'
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = '#F26D3D'}
+                onMouseLeave={e => e.currentTarget.style.color = '#AFA193'}
+              >
+                Export as Gifs/Video <span style={{ fontSize: 14 }}>&gt;</span>
+              </button>
+            </div>
           </div>
 
-          <div style={{ marginTop: 16, opacity: resultVisible ? 1 : 0, transition: `opacity 300ms 340ms ${EASE}` }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateRows: showExport ? '1fr' : '0fr',
+            transition: `grid-template-rows 400ms ${EASE}`,
+            width: '100%',
+          }}>
+            <div style={{
+              overflow: showExport ? 'visible' : 'hidden', // prevent child escape while 0fr
+              opacity: showExport ? 1 : 0,
+              marginTop: showExport ? 24 : 0,
+              transition: `opacity 300ms ${showExport ? '100ms' : '0ms'} ${EASE}, margin-top 400ms ${EASE}`,
+              display: 'flex', justifyContent: 'center'
+            }}>
+              <ExportWindowPreview onExport={handleExportOptions} />
+            </div>
+          </div>
+
+          <div style={{
+            marginTop: 32, opacity: resultVisible ? 1 : 0, transition: `opacity 300ms 340ms ${EASE}` 
+          }}>
             <button onClick={resetApp} style={{
               background: 'none', border: 'none', cursor: 'pointer',
-              fontSize: 14, fontWeight: 600, color: '#AFA193', fontFamily: '"Outfit", sans-serif',
+              fontSize: 10, fontWeight: 700, color: '#AFA193', fontFamily: '"Outfit", sans-serif',
+              textTransform: 'uppercase', letterSpacing: '0.05em',
               transition: `color 200ms ${EASE}`,
             }}
               onMouseEnter={e => e.currentTarget.style.color = '#F26D3D'}
               onMouseLeave={e => e.currentTarget.style.color = '#AFA193'}
             >
-              Process another file
+              OPTIMISE ANOTHER FILE
             </button>
           </div>
+
         </div>
 
       </div>
