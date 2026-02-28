@@ -6,4 +6,5 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/Lottieny/',
+  build: { minify: false, terserOptions: { compress: false, mangle: false } }
 })
