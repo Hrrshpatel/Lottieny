@@ -202,8 +202,7 @@ export default function App() {
     if (!cleanedData) return;
     const a = document.createElement('a');
     a.href = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(cleanedData));
-    const baseName = originalFile?.name ? originalFile.name.replace('.json', '') : 'animation';
-    a.download = `Clean_${baseName}.json`;
+    a.download = `Clean_${originalFile?.name || 'animation.json'}`;
     document.body.appendChild(a); a.click(); a.remove();
   };
 
