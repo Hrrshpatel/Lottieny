@@ -1,14 +1,54 @@
+import { useEffect, useRef, useState } from 'react';
+import lottie from 'lottie-web';
+
 /**
- * PreviewWindow — matches Figma node 1:38 exactly
+ * PreviewWindow — Figma node 1:38
  *
- * Figma spec:
- *   - backdrop-blur 2px
- *   - bg rgba(255,255,255,0.41)
- *   - border: #ff9858 1px dashed, rounded-16px
- *   - inner white image area (flex-1, rounded-12px)
- *   - footer row: LABEL (SemiBold) + SIZE (Medium), color #ff6c43, 10px
+ * Exact spacing from Figma inspector:
+ *   Outer card:  top 16, left 16, right 16, bottom 12
+ *   Gap image→footer: 8px
+ *   Footer text: 4px side padding (left & right)
+ *
+ * Animation area: (350 - 16 - 16) = 318px wide
+ * Height: computed from lottie aspect ratio at 318px width
  */
-export default function PreviewWindow({ children, label = 'ORIGINAL', size = '' }) {
+
+const CARD_WIDTH = 350;
+const PAD_TOP    = 16;
+const PAD_SIDE   = 16;
+const PAD_BOTTOM = 12;
+const GAP        = 8;   // between image area and footer
+const ANIM_WIDTH = CARD_WIDTH - PAD_SIDE * 2; // 318px
+
+export default function PreviewWindow({
+  animationData,
+  label = 'OPTIMISED',
+  size = '',
+}) {
+  const containerRef = useRef(null);
+  const animRef = useRef(null);
+  const [animHeight, setAnimHeight] = useState(ANIM_WIDTH);
+
+  useEffect(() => {
+    if (!containerRef.current || !animationData) return;
+
+    const w = animationData.w || animationData.pw || ANIM_WIDTH;
+    const h = animationData.h || animationData.ph || ANIM_WIDTH;
+    setAnimHeight(Math.round((h / w) * ANIM_WIDTH));
+
+    animRef.current = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      animationData: JSON.parse(JSON.stringify(animationData)),
+    });
+
+    return () => {
+      if (animRef.current) { animRef.current.destroy(); animRef.current = null; }
+    };
+  }, [animationData]);
+
   return (
     <div
       style={{
@@ -17,48 +57,49 @@ export default function PreviewWindow({ children, label = 'ORIGINAL', size = '' 
         background: 'rgba(255,255,255,0.41)',
         border: '1px dashed #ff9858',
         borderRadius: '16px',
-        display: 'flex',
+        /* Exact Figma padding: top 16, sides 16, bottom 12 */
+        paddingTop: PAD_TOP,
+        paddingLeft: PAD_SIDE,
+        paddingRight: PAD_SIDE,
+        paddingBottom: PAD_BOTTOM,
+        display: 'inline-flex',
         flexDirection: 'column',
-        gap: '4px',
-        padding: '8px',
-        width: '100%',
-        height: '100%',
+        gap: GAP,
+        width: CARD_WIDTH,
         boxSizing: 'border-box',
-        overflow: 'hidden',
-        position: 'relative',
       }}
     >
-      {/* White image / animation area */}
+      {/* Animation area — transparent, hugs lottie aspect ratio */}
       <div
         style={{
-          background: '#fff',
           borderRadius: '12px',
-          flex: '1 0 0',
-          minHeight: '1px',
-          minWidth: '1px',
-          width: '100%',
           overflow: 'hidden',
+          background: 'transparent',
+          width: ANIM_WIDTH,
+          height: animHeight,
+          flexShrink: 0,
         }}
       >
-        {children}
+        <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
       </div>
 
-      {/* Footer row */}
+      {/* Footer — 4px side padding, as per Figma */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 8px',
+          paddingLeft: 4,
+          paddingRight: 4,
           color: '#ff6c43',
           fontSize: '10px',
+          fontWeight: 600,
           lineHeight: 'normal',
+          letterSpacing: '0.06em',
           flexShrink: 0,
         }}
       >
-        <span style={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          {label}
-        </span>
+        <span style={{ textTransform: 'uppercase' }}>{label}</span>
         <span style={{ fontWeight: 500 }}>{size}</span>
       </div>
     </div>
