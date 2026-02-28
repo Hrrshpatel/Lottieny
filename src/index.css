@@ -1,12 +1,24 @@
 @import "tailwindcss";
+@import "@fontsource/quicksand/700.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/700.css";
+
+@theme {
+  --color-brand-beige: #F4EDE6;
+  --color-brand-orange-light: #FF7E4A;
+  --color-brand-orange-dark: #FF6A3D;
+  --color-brand-text: #4A3C31;
+  --color-brand-text-muted: #9F938B;
+
+  --font-heading: "Quicksand", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+}
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #0f172a; /* slate-900 */
+  font-family: var(--font-body);
+  color-scheme: light;
+  color: var(--color-brand-text);
+  background-color: var(--color-brand-beige);
 }
 
 body {
@@ -15,5 +27,34 @@ body {
   min-width: 320px;
   min-height: 100vh;
   width: 100vw;
-  background-color: #0f172a;
+  background-color: var(--color-brand-beige);
+  /* SVG Noise Overlay */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Custom Utilities for Lottiney Style */
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-brand-orange-dark), var(--color-brand-orange-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, var(--color-brand-orange-dark), var(--color-brand-orange-light));
+  }
+
+  .shadow-brand {
+    box-shadow: 0 10px 25px -5px rgba(139, 69, 19, 0.25), 0 8px 10px -6px rgba(139, 69, 19, 0.15);
+  }
+
+  .shadow-brand-hover {
+    box-shadow: 0 14px 28px -5px rgba(139, 69, 19, 0.3), 0 10px 12px -6px rgba(139, 69, 19, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .border-dashed-brand {
+    border: 2px dashed rgba(255, 106, 61, 0.4);
+  }
 }

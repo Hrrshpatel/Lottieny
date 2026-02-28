@@ -27,7 +27,7 @@ const LottiePlayer = ({ animationData, className }) => {
     return (
         <div
             ref={containerRef}
-            className={`w-full max-w-sm aspect-square bg-slate-800/50 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-700 ${className || ''}`}
+            className={`w-full h-full flex items-center justify-center ${className || ''}`}
         />
     );
 };
