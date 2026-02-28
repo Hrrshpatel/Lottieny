@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Download, Sparkles, ChevronsRight, FolderOpen, Film, Image } from 'lucide-react';
 import LottiePlayer from './components/LottiePlayer';
+import PreviewWindow from './components/PreviewWindow';
 import { processLottie, formatBytes } from './utils/lottieProcessor';
 import { exportAsGif, exportAsVideo, hasTransparentBackground } from './utils/lottieExporter';
 
@@ -280,16 +281,13 @@ function App() {
           {appState === 'done' && (
             <div className="w-full flex flex-col items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
 
-              {/* Preview row */}
-              <div className="w-full grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6">
+              {/* Preview row — Figma node 1:38 style */}
+              <div className="w-full grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-stretch gap-6">
 
                 {/* Original */}
-                <LottieFrame
-                  animationData={originalData}
-                  label="Original"
-                  size={formatBytes(stats?.originalSize)}
-                  accent={false}
-                />
+                <PreviewWindow label="ORIGINAL" size={formatBytes(stats?.originalSize)}>
+                  <LottiePlayer animationData={originalData} className="w-full h-full" />
+                </PreviewWindow>
 
                 {/* Arrow */}
                 <div className="flex items-center justify-center py-4 md:py-0">
@@ -297,12 +295,9 @@ function App() {
                 </div>
 
                 {/* Optimised */}
-                <LottieFrame
-                  animationData={cleanedData}
-                  label="Optimised"
-                  size={formatBytes(stats?.cleanSize)}
-                  accent={true}
-                />
+                <PreviewWindow label="OPTIMISED" size={formatBytes(stats?.cleanSize)}>
+                  <LottiePlayer animationData={cleanedData} className="w-full h-full" />
+                </PreviewWindow>
               </div>
 
               {/* Size reduction stat */}
