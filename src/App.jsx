@@ -3,11 +3,14 @@ import { Download } from 'lucide-react';
 import PreviewWindow from './components/PreviewWindow';
 import { processLottie, formatBytes } from './utils/lottieProcessor';
 
-// Assets — served from /public
-const LOGO_MARK = new URL('/logo-mark.png', import.meta.url).href;
 const FOLDER_ICON = new URL('/folder-icon.png', import.meta.url).href;
-
+const LOGO_MARK   = new URL('/logo-mark.png',   import.meta.url).href;
 const EASE = 'cubic-bezier(0.4, 0.0, 0.2, 1)';
+
+// ─── Logo mark — PNG ───────────────────────────────────────────────────────────
+function LogoMark({ size = 40 }) {
+  return <img src={LOGO_MARK} alt="Lottiney" style={{ width: size, height: size, objectFit: 'contain' }} />;
+}
 
 // ─── Animated counter ─────────────────────────────────────────────────────────
 function useCountUp(target, duration = 900) {
@@ -19,7 +22,7 @@ function useCountUp(target, duration = 900) {
     const step = (ts) => {
       if (!start) start = ts;
       const p = Math.min((ts - start) / duration, 1);
-      setValue(+(( 1 - Math.pow(1 - p, 3)) * end).toFixed(1));
+      setValue(+((1 - Math.pow(1 - p, 3)) * end).toFixed(1));
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -29,12 +32,12 @@ function useCountUp(target, duration = 900) {
 
 // ─── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [appState, setAppState]       = useState('idle');
-  const [originalFile, setOriginalFile] = useState(null);
-  const [originalData, setOriginalData] = useState(null);
-  const [cleanedData, setCleanedData]   = useState(null);
-  const [stats, setStats]               = useState(null);
-  const [isDragging, setIsDragging]     = useState(false);
+  const [appState, setAppState]           = useState('idle');
+  const [originalFile, setOriginalFile]   = useState(null);
+  const [originalData, setOriginalData]   = useState(null);
+  const [cleanedData, setCleanedData]     = useState(null);
+  const [stats, setStats]                 = useState(null);
+  const [isDragging, setIsDragging]       = useState(false);
   const [resultVisible, setResultVisible] = useState(false);
   const fileInputRef = useRef(null);
   const reducePct    = useCountUp(resultVisible ? stats?.reductionPercentage : null, 900);
@@ -47,7 +50,7 @@ export default function App() {
       try {
         setOriginalData(JSON.parse(e.target.result));
         setAppState('file_selected');
-      } catch { alert('Invalid JSON file'); }
+      } catch { alert('Invalid JSON'); }
     };
     reader.readAsText(file);
   }, []);
@@ -101,59 +104,54 @@ export default function App() {
       padding: '48px 24px', boxSizing: 'border-box',
       fontFamily: '"Outfit", sans-serif',
     }}>
-      {/* ── Card ── */}
+
+      {/* ══ White card container ══ */}
       <div style={{
         width: '100%',
-        maxWidth: isDone ? '840px' : '420px',
+        maxWidth: isDone ? '860px' : '440px',
+        background: 'linear-gradient(160deg, rgba(255,255,255,0.97) 0%, rgba(255,248,244,0.97) 100%)',
+        backdropFilter: 'blur(24px)',
+        WebkitBackdropFilter: 'blur(24px)',
+        borderRadius: 40,
+        border: '1px solid rgba(255,255,255,0.8)',
+        boxShadow: '0 24px 64px -16px rgba(180,100,60,0.10)',
+        padding: isDone ? '48px 52px' : '44px 40px',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        transition: `max-width 480ms ${EASE}`,
+        transition: `max-width 480ms ${EASE}, padding 480ms ${EASE}`,
+        gap: 0,
       }}>
 
-        {/* ── HEADER — always visible ── */}
-        <header style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 28, gap: 0 }}>
-          {/* Logo mark */}
-          <img
-            src={LOGO_MARK}
-            alt="Lottiney"
-            style={{ width: 52, height: 52, objectFit: 'contain', marginBottom: 12 }}
-          />
-          {/* Title */}
+        {/* ── Header ── */}
+        <header style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 28 }}>
+          <LogoMark size={48} />
           <h1 style={{
-            margin: '0 0 6px',
+            margin: '12px 0 6px',
             fontFamily: '"Outfit", sans-serif',
-            fontSize: 52, fontWeight: 800,
+            fontSize: 38, fontWeight: 800,
             color: '#3D2A1E', letterSpacing: '-1.5px', lineHeight: 1,
           }}>
-            Lottie<span style={{ fontStyle: 'italic' }}>ney</span>
+            Lottiney
           </h1>
-          {/* Tagline */}
-          <p style={{
-            margin: 0, fontSize: 16, fontWeight: 400,
-            color: '#AFA193', letterSpacing: '0.01em',
-          }}>
+          <p style={{ margin: 0, fontSize: 16, fontWeight: 400, color: '#AFA193' }}>
             Make your Lottie tiny.
           </p>
         </header>
 
-        {/* ── UPLOAD SECTION ── */}
+        {/* ── Upload section ── */}
         <div style={{
-          width: '100%',
+          width: '100%', overflow: 'hidden',
           maxHeight: isUpload ? '600px' : '0px',
-          overflow: 'hidden',
           opacity: isUpload ? 1 : 0,
           transition: [
             `max-height 480ms ${EASE}`,
             `opacity ${isUpload ? '240ms 60ms' : '150ms 0ms'} ${EASE}`,
           ].join(', '),
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20,
         }}>
-
           {/* Drop Zone */}
           <DropZone
-            appState={appState}
-            isDragging={isDragging}
-            originalFile={originalFile}
-            fileInputRef={fileInputRef}
+            appState={appState} isDragging={isDragging}
+            originalFile={originalFile} fileInputRef={fileInputRef}
             onInputChange={(e) => handleFile(e.target.files[0])}
             onDrop={(e) => { e.preventDefault(); setIsDragging(false); handleFile(e.dataTransfer.files[0]); }}
             onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -161,24 +159,19 @@ export default function App() {
             onReset={resetApp}
           />
 
-          {/* Optimise Button */}
+          {/* CTA — content-width, centred */}
           <PhysicsButton
             onClick={executeOptimization}
             disabled={appState === 'idle' || appState === 'processing'}
-            style={{ width: '100%' }}
           >
-            {appState === 'processing' ? (
-              <>
-                <Spinner /> Optimising...
-              </>
-            ) : 'Optmise Lottie'}
+            {'Optmise Lottie'}
           </PhysicsButton>
         </div>
 
-        {/* ── RESULT SECTION ── */}
+        {/* ── Result section ── */}
         <div style={{
-          width: '100%',
-          maxHeight: isDone ? '900px' : '0px', overflow: 'hidden',
+          width: '100%', overflow: 'hidden',
+          maxHeight: isDone ? '900px' : '0px',
           opacity: isDone ? 1 : 0,
           transition: [
             `max-height 480ms ${EASE}`,
@@ -194,11 +187,11 @@ export default function App() {
             transform: resultVisible ? 'translateY(0) scale(1)' : 'translateY(14px) scale(0.96)',
             transition: `opacity 300ms ${EASE}, transform 380ms ${EASE}`,
           }}>
-            <LabelledPreview label="ORIGINAL" animationData={originalData} size={formatBytes(stats?.originalSize)} delay={0}  visible={resultVisible} />
+            <LabelledPreview label="ORIGINAL"  animationData={originalData} size={formatBytes(stats?.originalSize)} delay={0}  visible={resultVisible} />
             <LabelledPreview label="OPTIMISED" animationData={cleanedData}  size={formatBytes(stats?.cleanSize)}   delay={80} visible={resultVisible} highlighted />
           </div>
 
-          {/* Stat */}
+          {/* Stats */}
           <div style={{
             marginTop: 36, textAlign: 'center',
             opacity: resultVisible ? 1 : 0,
@@ -221,9 +214,8 @@ export default function App() {
             opacity: resultVisible ? 1 : 0,
             transform: resultVisible ? 'translateY(0)' : 'translateY(10px)',
             transition: `opacity 300ms 280ms ${EASE}, transform 360ms 280ms ${EASE}`,
-            width: '100%',
           }}>
-            <PhysicsButton onClick={handleDownload} icon={<Download style={{width:20,height:20}} />} style={{ width: '100%' }}>
+            <PhysicsButton onClick={handleDownload} icon={<Download style={{width:20,height:20}} />}>
               Download Lottie
             </PhysicsButton>
           </div>
@@ -241,18 +233,26 @@ export default function App() {
             </button>
           </div>
         </div>
+
       </div>
     </div>
   );
 }
 
-// ─── DropZone ──────────────────────────────────────────────────────────────────
+// ─── DropZone ─────────────────────────────────────────────────────────────────
+// States: idle (22-62) | file_selected (22-70) | processing (22-71)
 function DropZone({ appState, isDragging, originalFile, fileInputRef, onInputChange, onDrop, onDragOver, onDragLeave, onReset }) {
   const [hovered, setHovered] = useState(false);
-  const hasFile     = appState === 'file_selected' || appState === 'processing';
+  const isIdle       = appState === 'idle';
+  const isSelected   = appState === 'file_selected';
   const isProcessing = appState === 'processing';
+  const hasFile      = isSelected || isProcessing;
 
-  const borderColor = isDragging || hovered ? '#F26D3D' : '#F5B49A';
+  const borderColor = isDragging || (hovered && isIdle)
+    ? '#FF6C43'
+    : hasFile
+      ? '#FF6C43'
+      : '#F5B49A';
 
   return (
     <div
@@ -261,66 +261,122 @@ function DropZone({ appState, isDragging, originalFile, fileInputRef, onInputCha
       onMouseEnter={() => !isProcessing && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        width: '100%', minHeight: 260,
-        borderRadius: 24,
+        width: '100%', minHeight: 260, borderRadius: 20,
         border: `2px dashed ${borderColor}`,
-        background: hovered || isDragging ? 'rgba(255,255,255,1)' : 'rgba(255,255,255,0.75)',
+        background: 'rgba(255,255,255,0.85)',
         display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
         gap: 16, padding: '40px 28px', boxSizing: 'border-box',
-        cursor: isProcessing ? 'not-allowed' : 'pointer',
-        opacity: isProcessing ? 0.6 : 1,
-        transition: `border-color 200ms ${EASE}, background 200ms ${EASE}, opacity 200ms ${EASE}`,
+        cursor: isProcessing ? 'default' : 'pointer',
+        transition: `border-color 220ms ${EASE}`,
+        position: 'relative',
       }}
     >
       <input type="file" ref={fileInputRef} accept=".json"
         style={{ display: 'none' }} onChange={onInputChange} disabled={isProcessing} />
 
-      {/* Folder icon PNG */}
-      <img
-        src={FOLDER_ICON}
-        alt="folder"
-        style={{
-          width: 64, height: 'auto',
-          filter: 'drop-shadow(0 6px 12px rgba(242,109,61,0.25))',
-          transform: hovered && !hasFile ? 'scale(1.08) translateY(-4px)' : 'scale(1) translateY(0)',
-          transition: `transform 240ms ${EASE}`,
-        }}
-      />
+      {/* ── IDLE STATE (22-62) ── */}
+      {isIdle && (
+        <>
+          <img src={FOLDER_ICON} alt="folder" style={{
+            width: 60, height: 'auto',
+            filter: 'drop-shadow(0 6px 14px rgba(242,109,61,0.3))',
+            transform: hovered ? 'scale(1.08) translateY(-4px)' : 'scale(1) translateY(0)',
+            transition: `transform 240ms ${EASE}`,
+          }} />
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 700, color: '#3D2A1E', lineHeight: 1.3 }}>
+              Select a <span style={{ color: '#FF6C43' }}>Lottie File</span>
+            </p>
+            <p style={{ margin: 0, fontSize: 14, fontWeight: 400, color: '#AFA193' }}>
+              Drag &amp; drop or Click to browse
+            </p>
+          </div>
+        </>
+      )}
 
-      {/* Text */}
-      {hasFile ? (
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ margin: '0 0 6px', fontSize: 17, fontWeight: 700, color: '#3D2A1E', maxWidth: 280, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {originalFile?.name}
-          </p>
-          <p style={{ margin: 0, fontSize: 14, fontWeight: 500, color: '#AFA193', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
-            <span>{formatBytes(originalFile?.size)}</span>
-            {!isProcessing && (
+      {/* ── FILE SELECTED STATE (22-70) ── */}
+      {isSelected && (
+        <>
+          <img src={FOLDER_ICON} alt="folder" style={{
+            width: 60, height: 'auto',
+            filter: 'drop-shadow(0 6px 14px rgba(242,109,61,0.3))',
+          }} />
+          <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {/* File name */}
+            <p style={{
+              margin: 0, fontSize: 16, fontWeight: 700, color: '#3D2A1E',
+              maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}>
+              {originalFile?.name}
+            </p>
+            {/* File size + change */}
+            <p style={{
+              margin: 0, fontSize: 13, fontWeight: 500, color: '#AFA193',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+            }}>
+              <span>{formatBytes(originalFile?.size)}</span>
+              <span style={{ color: '#D4C8BC' }}>·</span>
               <button onClick={(e) => { e.stopPropagation(); onReset(); }}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 500, color: '#AFA193', fontFamily: '"Outfit", sans-serif', paddingLeft: 10, borderLeft: '1px solid #D4C8BC', textDecoration: 'underline' }}
-                onMouseEnter={e => e.currentTarget.style.color = '#3D2A1E'}
-                onMouseLeave={e => e.currentTarget.style.color = '#AFA193'}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  fontSize: 13, fontWeight: 600, color: '#FF6C43',
+                  fontFamily: '"Outfit", sans-serif', padding: 0,
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.7'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}
               >Change file</button>
-            )}
-          </p>
-        </div>
-      ) : (
-        <div style={{ textAlign: 'center' }}>
-          {/* "Select a Lottie File" with orange highlight on "Lottie File" */}
-          <p style={{ margin: '0 0 8px', fontSize: 22, fontWeight: 700, color: '#3D2A1E', lineHeight: 1.3 }}>
-            Select a <span style={{ color: '#F26D3D' }}>Lottie File</span>
-          </p>
-          <p style={{ margin: 0, fontSize: 15, fontWeight: 400, color: '#AFA193' }}>
-            Drag &amp; drop or Click to browse
-          </p>
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* ── PROCESSING STATE (22-71) ── */}
+      {isProcessing && (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+          {/* Animated ring */}
+          <div style={{ position: 'relative', width: 60, height: 60 }}>
+            <div style={{
+              position: 'absolute', inset: 0,
+              borderRadius: '50%',
+              border: '4px solid rgba(255,108,67,0.15)',
+            }} />
+            <div style={{
+              position: 'absolute', inset: 0,
+              borderRadius: '50%',
+              border: '4px solid transparent',
+              borderTopColor: '#FF6C43',
+              animation: 'spin 0.9s linear infinite',
+            }} />
+            <div style={{
+              position: 'absolute', inset: 8,
+              borderRadius: '50%',
+              background: 'rgba(255,108,67,0.08)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <img src={FOLDER_ICON} alt="" style={{ width: 28, height: 'auto', opacity: 0.7 }} />
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ margin: '0 0 4px', fontSize: 16, fontWeight: 700, color: '#3D2A1E' }}>
+              Optimising...
+            </p>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: '#AFA193' }}>
+              {originalFile?.name}
+            </p>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-// ─── Physics Button ────────────────────────────────────────────────────────────
-function PhysicsButton({ onClick, disabled, icon, children, style: extraStyle }) {
+// ─── Physics Button — content-width ───────────────────────────────────────────
+// ─── Primary Button — Figma spec ─────────────────────────────────────────────
+// Layout:  display flex; padding: 10px 24px; gap: 10px
+// Style:   border-radius: 20px; bg: #FF6C43; box-shadow glow
+// Hover:   translateY(-2px) scale(1.05)
+// Press:   translateY(0)    scale(0.98)
+function PhysicsButton({ onClick, disabled, icon, children }) {
   const [hovered, setHovered] = useState(false);
   const [pressed, setPressed] = useState(false);
   const isDisabled = !!disabled;
@@ -334,23 +390,33 @@ function PhysicsButton({ onClick, disabled, icon, children, style: extraStyle })
       onMouseDown={() => !isDisabled && setPressed(true)}
       onMouseUp={() => setPressed(false)}
       style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        gap: 10, padding: '16px 32px', borderRadius: 9999, border: 'none',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
+        padding: '10px 24px',
+        borderRadius: 20,
+        border: 'none',
         cursor: isDisabled ? 'not-allowed' : 'pointer',
-        fontFamily: '"Outfit", sans-serif', fontSize: 18, fontWeight: 700,
-        color: '#fff', letterSpacing: '0.01em',
-        background: isDisabled
-          ? 'linear-gradient(135deg, #E8D0C8, #DBBFB6)'
-          : 'linear-gradient(135deg, #F26D3D, #F5895F)',
-        boxShadow: isDisabled ? 'none' : pressed
-          ? '0 4px 12px -4px rgba(242,109,61,0.2)'
-          : hovered
-            ? '0 16px 36px -8px rgba(242,109,61,0.5)'
-            : '0 10px 28px -6px rgba(242,109,61,0.38)',
-        transform: pressed ? 'translateY(1px)' : hovered && !isDisabled ? 'translateY(-2px)' : 'translateY(0)',
-        transition: `transform 180ms ${EASE}, box-shadow 180ms ${EASE}, background 220ms ${EASE}`,
+        fontFamily: '"Outfit", sans-serif',
+        fontSize: 18,
+        fontWeight: 700,
+        color: '#fff',
+        letterSpacing: '0.01em',
+        background: isDisabled ? '#E8D0C8' : '#FF6C43',
+        boxShadow: isDisabled
+          ? 'none'
+          : pressed
+            ? '0 0 12px 0 rgba(255,108,67,0.25)'
+            : '0 0 12px 0 rgba(255,108,67,0.30)',
+        transform: pressed
+          ? 'translateY(0) scale(0.98)'
+          : hovered && !isDisabled
+            ? 'translateY(-2px) scale(1.025)'
+            : 'translateY(0) scale(1)',
+        transition: `transform 180ms ${EASE}, box-shadow 180ms ${EASE}`,
         opacity: isDisabled ? 0.55 : 1,
-        ...extraStyle,
+        whiteSpace: 'nowrap',
       }}
     >
       {icon}{children}
@@ -358,7 +424,6 @@ function PhysicsButton({ onClick, disabled, icon, children, style: extraStyle })
   );
 }
 
-// ─── Spinner ───────────────────────────────────────────────────────────────────
 function Spinner() {
   return (
     <div style={{
@@ -370,7 +435,6 @@ function Spinner() {
   );
 }
 
-// ─── LabelledPreview ──────────────────────────────────────────────────────────
 function LabelledPreview({ label, animationData, size, delay, visible, highlighted }) {
   return (
     <div style={{
@@ -379,16 +443,11 @@ function LabelledPreview({ label, animationData, size, delay, visible, highlight
       transform: visible ? 'translateY(0) scale(1)' : 'translateY(14px) scale(0.96)',
       transition: `opacity 300ms ${delay}ms ${EASE}, transform 380ms ${delay}ms ${EASE}`,
     }}>
-      <p style={{
-        fontSize: 11, fontWeight: 700, margin: 0, textTransform: 'uppercase',
-        letterSpacing: '0.12em', color: highlighted ? '#F26D3D' : '#AFA193',
-      }}>{label}</p>
-      <PreviewWindow animationData={animationData} label={label} size={size} />
+      <PreviewWindow animationData={animationData} label={label} size={size} accent={!!highlighted} />
     </div>
   );
 }
 
-// ─── Global spin keyframe ─────────────────────────────────────────────────────
-const _style = document.createElement('style');
-_style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-document.head.appendChild(_style);
+const _s = document.createElement('style');
+_s.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+document.head.appendChild(_s);

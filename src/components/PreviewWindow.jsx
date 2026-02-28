@@ -24,6 +24,7 @@ export default function PreviewWindow({
   animationData,
   label = 'OPTIMISED',
   size = '',
+  accent = true,  // true = orange (OPTIMISED), false = gray (ORIGINAL)
 }) {
   const containerRef = useRef(null);
   const animRef = useRef(null);
@@ -55,7 +56,7 @@ export default function PreviewWindow({
         backdropFilter: 'blur(2px)',
         WebkitBackdropFilter: 'blur(2px)',
         background: 'rgba(255,255,255,0.41)',
-        border: '1px dashed #ff9858',
+        border: accent ? '1px dashed #ff9858' : '1px dashed #C8C4C0',
         borderRadius: '16px',
         /* Exact Figma padding: top 16, sides 16, bottom 12 */
         paddingTop: PAD_TOP,
@@ -91,7 +92,7 @@ export default function PreviewWindow({
           justifyContent: 'space-between',
           paddingLeft: 4,
           paddingRight: 4,
-          color: '#ff6c43',
+          color: accent ? '#FF6C43' : '#A09890',
           fontSize: '10px',
           fontWeight: 600,
           lineHeight: 'normal',
