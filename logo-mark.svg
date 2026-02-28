@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#FF6C43">
+  <!-- U-shaped arc at bottom -->
+  <path d="M 12 48 A 38 38 0 0 0 88 48" stroke="#FF6C43" stroke-width="14" fill="none" stroke-linecap="butt"/>
+  <!-- Tilted L shape (vertical + horizontal bar) -->
+  <g transform="rotate(20 50 50)">
+    <rect x="44" y="8" width="14" height="48" rx="2"/>
+    <rect x="44" y="52" width="30" height="14" rx="2"/>
+  </g>
+  <!-- Square (left) -->
+  <rect x="14" y="34" width="16" height="16" rx="2"/>
+  <!-- Circle (right of L) -->
+  <circle cx="67" cy="34" r="9"/>
+</svg>
