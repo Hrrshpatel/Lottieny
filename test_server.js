@@ -1,1 +1,0 @@
-console.log("Checking errors"); const http = require("http"); http.get("http://localhost:4173/", res => { let data = ""; res.on("data", chunk => data += chunk); res.on("end", () => console.log(data)); });
