@@ -8,9 +8,9 @@ import { Analytics } from '@vercel/analytics/react'
 
 // Dynamic Title Logic
 if (import.meta.env.DEV) {
-  document.title = `Lottieny v${pkg.version}`;
+  document.title = `Lottiney v${pkg.version}`;
 } else {
-  document.title = 'Lottieny';
+  document.title = 'Lottiney';
 }
 
 // Route: ?preview loads the PreviewWindow demo page

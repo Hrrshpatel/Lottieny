@@ -11,7 +11,7 @@ try:
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     response = urllib.request.urlopen(req, context=ctx)
     html = response.read().decode('utf-8')
-    print("Contains 'Lottieny' title:", "<title>Lottieny</title>" in html)
+    print("Contains 'Lottiney' title:", "<title>Lottiney</title>" in html)
     print("Contains js output:", "assets/index" in html)
     print("First 200 chars:")
     print(html[:200])
