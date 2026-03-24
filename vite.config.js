@@ -6,5 +6,5 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/',
-  build: { minify: false, terserOptions: { compress: false, mangle: false } }
+  build: { minify: false, terserOptions: { compress: false, mangle: false } },
 })

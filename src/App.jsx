@@ -194,7 +194,8 @@ export default function App() {
       URL.revokeObjectURL(a.href);
     } catch (err) {
       console.error(err);
-      alert("Failed to export: " + err.message);
+      const msg = err?.message || (typeof err === 'string' ? err : 'Unknown error — check browser console for details');
+      alert("Failed to export: " + msg);
     }
   };
 
@@ -286,7 +287,7 @@ export default function App() {
         {/* ── Result section ── */}
         <div style={{
           width: '100%', overflow: 'hidden',
-          maxHeight: isDone ? '1100px' : '0px',
+          maxHeight: isDone ? '3500px' : '0px',
           opacity: isDone ? 1 : 0,
           transition: [
             `max-height 480ms ${EASE}`,

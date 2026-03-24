@@ -198,7 +198,7 @@ export default function ExportWindowPreview({ onExport }) {
                   fontFamily: "Outfit", fontWeight: 600, fontSize: 12, margin: 0, color: "#735A48", background: "transparent", border: "none", outline: "none", width: "100%", textAlign: "center", textAlignLast: "center", appearance: "none", cursor: "pointer"
                 }}
               >
-                {["360p", "540p", "720p", "1080p"].map(val => (
+                {["360p", "540p", "720p", "1080p", "1440p", "2160p"].map(val => (
                   <option key={val} value={val}>{val}</option>
                 ))}
               </select>
@@ -208,9 +208,9 @@ export default function ExportWindowPreview({ onExport }) {
 
         <div style={{
           display: "flex", gap: 6, alignItems: "center", justifyContent: "center",
-          opacity: isGif ? 1 : 0,
-          height: isGif ? 16 : 0,
-          pointerEvents: isGif ? "auto" : "none",
+          opacity: 1,
+          height: 16,
+          pointerEvents: "auto",
           transition: "all 250ms ease-in-out",
           overflow: "hidden",
           width: "100%"

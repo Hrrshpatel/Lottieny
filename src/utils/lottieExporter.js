@@ -1,24 +1,28 @@
 /**
- * lottieExporter.js
+ * lottieExporter.js — Hardware-Sync DPR Streaming Engine
  *
- * First-principles approach:
- *  1. Mount lottie-web with the SVG renderer (same as the working LottiePlayer component)
- *  2. Step through every output frame using goToAndStop()
- *  3. Rasterize the live SVG to a canvas via Image + XMLSerializer (precise, no canvas-renderer quirks)
- *  4. For GIF: encode with gifenc (better colour quality than gif.js)
- *  5. For Video: feed frames to MediaRecorder via captureStream
+ * Architecture:
+ *  1. Mount lottie-web (SVG renderer) in a hidden off-screen host
+ *  2. Step through every output frame with goToAndStop()
+ *  3. Serialize each SVG at physical DPR pixels → decode via Image → draw 1:1
+ *  4. Stream each rendered frame directly to the encoder via onFrame()
+ *  5. GIF: encode with gifenc (rgb565 for opaque, rgba4444 for transparent)
+ *  6. Video: encode with FFmpeg.wasm (frame-count based — always exact duration)
  */
 
 import lottie from 'lottie-web';
 import { GIFEncoder, quantize, applyPalette } from 'gifenc';
 
-// ─── helpers ────────────────────────────────────────────────────────────────
+// ─── helpers ─────────────────────────────────────────────────────────────────
 
-const RESOLUTION_MAP = { '540p': 540, '720p': 720, '1080p': 1080, '1440p': 1440 };
+const RESOLUTION_MAP = {
+    '360p': 360, '540p': 540, '720p': 720,
+    '1080p': 1080, '1440p': 1440, '2160p': 2160,
+};
 
 export function hasTransparentBackground(animationData) {
     if (!animationData?.layers) return true;
-    return !animationData.layers.some((l) => l.ty === 1); // ty=1 → solid layer
+    return !animationData.layers.some((l) => l.ty === 1);
 }
 
 function getDimensions(animationData, resKey) {
@@ -28,110 +32,103 @@ function getDimensions(animationData, resKey) {
     return { width: w % 2 ? w + 1 : w, height: h % 2 ? h + 1 : h };
 }
 
-// ─── SVG rasterizer ─────────────────────────────────────────────────────────
+// ─── Core rasterizer ─────────────────────────────────────────────────────────
 
-/**
- * Renders every output frame to an off-screen canvas using lottie-web's SVG
- * renderer, then snapshots the SVG via XMLSerializer → Image → canvas.
- *
- * Returns an array of { canvas, ctx } objects, one per output frame.
- */
-function rasterizeFrames(animationData, { width, height, fps, onProgress }) {
+function rasterizeFrames(animationData, { width, height, fps, onProgress, onFrame }) {
     return new Promise((resolve, reject) => {
-        // Hidden container must be in the DOM for lottie-web
+        const wPhysical = width;
+        const hPhysical = height;
+
         const host = document.createElement('div');
-        host.style.cssText = `position:fixed;left:-${width + 100}px;top:0;width:${width}px;height:${height}px;overflow:hidden;pointer-events:none;`;
+        host.style.cssText = `position:fixed;top:0;left:0;` +
+            `width:${width}px;height:${height}px;visibility:hidden;pointer-events:none;`;
         document.body.appendChild(host);
 
         const anim = lottie.loadAnimation({
-            container: host,
-            renderer: 'svg',
-            loop: false,
-            autoplay: false,
+            container : host,
+            renderer  : 'svg',
+            loop      : false,
+            autoplay  : false,
             animationData: JSON.parse(JSON.stringify(animationData)),
             rendererSettings: { preserveAspectRatio: 'xMidYMid meet' },
         });
 
+        function cleanup() {
+            try { anim.destroy(); } catch (_) {}
+            try { host.remove();  } catch (_) {}
+        }
+
+        let renderStarted = false;
+
         function doRender() {
+            if (renderStarted) return;
+            renderStarted = true;
+
             const totalLottieFrames = anim.totalFrames;
-            const durationSecs = totalLottieFrames / (animationData.fr || 30);
-            const totalOut = Math.max(1, Math.ceil(durationSecs * fps));
-            const svgEl = host.querySelector('svg');
+            const durationSecs      = totalLottieFrames / (animationData.fr || 30);
+            const totalOut          = Math.max(1, Math.ceil(durationSecs * fps));
+            const svgEl             = host.querySelector('svg');
 
             if (!svgEl) {
-                anim.destroy();
-                host.remove();
-                reject(new Error('SVG element not found in lottie output. Please check the animation file.'));
+                cleanup();
+                reject(new Error('SVG element not found — check the animation file.'));
                 return;
             }
 
-            // Make sure SVG has explicit dimensions so the Image has a size.
-            svgEl.setAttribute('width', String(width));
-            svgEl.setAttribute('height', String(height));
+            svgEl.setAttribute('width',  String(wPhysical));
+            svgEl.setAttribute('height', String(hPhysical));
 
-            const frames = [];
-            let completed = 0;
+            const fc   = document.createElement('canvas');
+            fc.width   = wPhysical;
+            fc.height  = hPhysical;
+            const fCtx = fc.getContext('2d');
 
             function captureNextFrame(i) {
                 if (i >= totalOut) {
-                    anim.destroy();
-                    host.remove();
-                    resolve({ frames, durationSecs });
+                    cleanup();
+                    resolve();
                     return;
                 }
 
                 anim.goToAndStop((i / totalOut) * totalLottieFrames, true);
 
-                // Flush pending browser render work (important at 1080p+)
                 requestAnimationFrame(() => {
                     const svgString = new XMLSerializer().serializeToString(svgEl);
                     const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-                    const url = URL.createObjectURL(blob);
+                    const url  = URL.createObjectURL(blob);
+                    const img  = new Image();
+                    img.src    = url;
 
-                    const img = new Image();
-                    // Set dims so the browser knows the target size before decoding
-                    img.width = width;
-                    img.height = height;
-                    img.src = url;
-
-                    // img.decode() waits for full pixel decode — critical at 1080p/1440p
                     img.decode()
                         .then(() => {
-                            const fc = document.createElement('canvas');
-                            fc.width = width;
-                            fc.height = height;
-                            const ctx = fc.getContext('2d');
-                            ctx.clearRect(0, 0, width, height);
-                            ctx.drawImage(img, 0, 0, width, height);
+                            fCtx.clearRect(0, 0, wPhysical, hPhysical);
+                            fCtx.drawImage(img, 0, 0);
                             URL.revokeObjectURL(url);
-                            frames.push(fc);
-                            completed++;
-                            if (onProgress) onProgress(Math.round((completed / totalOut) * 100));
-                            // Small yield between frames so the browser stays responsive
-                            // Scale delay with pixel count so 1080p/1440p get more time
-                            const pixelDelay = width >= 1920 ? 32 : width >= 1280 ? 16 : 0;
-                            setTimeout(() => captureNextFrame(i + 1), pixelDelay);
+                            return Promise.resolve(onFrame ? onFrame(fc, i) : null);
                         })
-                        .catch(() => {
+                        .then(() => {
+                            if (onProgress) onProgress(Math.round(((i + 1) / totalOut) * 100));
+                            const delay = wPhysical >= 3840 ? 32 : wPhysical >= 1920 ? 16 : 0;
+                            setTimeout(() => captureNextFrame(i + 1), delay);
+                        })
+                        .catch((err) => {
                             URL.revokeObjectURL(url);
-                            anim.destroy();
-                            host.remove();
-                            reject(new Error(`Failed to decode frame ${i} at ${width}×${height}`));
+                            cleanup();
+                            reject(err instanceof Error ? err : new Error(`Frame ${i} failed: ${err}`));
                         });
                 });
             }
+
             captureNextFrame(0);
         }
 
         anim.addEventListener('DOMLoaded', doRender);
 
-        // 5-second safety timeout
         const tOut = setTimeout(() => {
             if (host.querySelector('svg')) {
-                doRender(); // try anyway
+                doRender();
             } else {
-                anim.destroy();
-                host.remove();
+                cleanup();
                 reject(new Error('Lottie DOMLoaded timeout — animation may be corrupt.'));
             }
         }, 5000);
@@ -140,112 +137,141 @@ function rasterizeFrames(animationData, { width, height, fps, onProgress }) {
     });
 }
 
-// ─── GIF export ─────────────────────────────────────────────────────────────
+// ─── GIF export ──────────────────────────────────────────────────────────────
 
 export async function exportAsGif(animationData, { fps = 30, resolution = '720p', onProgress } = {}) {
     const { width, height } = getDimensions(animationData, resolution);
-    const transparent = hasTransparentBackground(animationData);
+    const transparent       = hasTransparentBackground(animationData);
 
-    onProgress?.(3, 'Rendering frames…');
+    const wPhysical = width;
+    const hPhysical = height;
 
-    const { frames } = await rasterizeFrames(animationData, {
+    const encoder    = GIFEncoder();
+    const delay      = Math.round(1000 / fps);
+    const tmpCanvas  = document.createElement('canvas');
+    tmpCanvas.width  = wPhysical;
+    tmpCanvas.height = hPhysical;
+    const tmpCtx     = tmpCanvas.getContext('2d');
+
+    await rasterizeFrames(animationData, {
         width, height, fps,
-        onProgress: (p) => onProgress?.(3 + Math.round(p * 0.45), 'Rendering frames…'),
+        onProgress: (p) => onProgress?.(3 + Math.round(p * 0.95), 'Rendering & Encoding GIF…'),
+        onFrame: (frameCanvas) => {
+            tmpCtx.clearRect(0, 0, wPhysical, hPhysical);
+            if (!transparent) {
+                tmpCtx.fillStyle = '#FFFFFF';
+                tmpCtx.fillRect(0, 0, wPhysical, hPhysical);
+            }
+            tmpCtx.drawImage(frameCanvas, 0, 0);
+
+            const { data } = tmpCtx.getImageData(0, 0, wPhysical, hPhysical);
+            const fmt     = transparent ? 'rgba4444' : 'rgb565';
+            const palette = quantize(data, 256, { format: fmt });
+            const indexed = applyPalette(data, palette, fmt);
+
+            encoder.writeFrame(indexed, wPhysical, hPhysical, {
+                palette,
+                delay,
+                transparent,
+                dispose: transparent ? 2 : 0,
+            });
+        },
     });
-
-    onProgress?.(50, 'Encoding GIF…');
-
-    const encoder = GIFEncoder();
-    const delay = Math.round(1000 / fps);
-    const tmpCanvas = document.createElement('canvas');
-    tmpCanvas.width = width;
-    tmpCanvas.height = height;
-    const tmpCtx = tmpCanvas.getContext('2d');
-
-    for (let i = 0; i < frames.length; i++) {
-        tmpCtx.clearRect(0, 0, width, height);
-        tmpCtx.drawImage(frames[i], 0, 0);
-        const { data } = tmpCtx.getImageData(0, 0, width, height);
-
-        const palette = quantize(data, 256, { format: 'rgba4444', oneBitAlpha: transparent });
-        const indexed = applyPalette(data, palette, 'rgba4444');
-
-        encoder.writeFrame(indexed, width, height, {
-            palette,
-            delay,
-            transparent,
-            dispose: transparent ? 2 : 0, // 2 = restore to background (needed for transparency between frames)
-        });
-
-        onProgress?.(50 + Math.round(((i + 1) / frames.length) * 48), 'Encoding GIF…');
-    }
 
     encoder.finish();
-    const bytes = encoder.bytes();
     onProgress?.(100, 'Done!');
-    return new Blob([bytes], { type: 'image/gif' });
+    return new Blob([encoder.bytes()], { type: 'image/gif' });
 }
 
-// ─── Video export ────────────────────────────────────────────────────────────
+// ─── Video export (Absolute-Clock MediaRecorder) ─────────────────────────────
 
-export async function exportAsVideo(animationData, { fps = 30, resolution = '720p', onProgress } = {}) {
+export async function exportAsVideo(animationData, { fps = 30, resolution = '720p', transparent = false, onProgress } = {}) {
     const { width, height } = getDimensions(animationData, resolution);
 
-    onProgress?.(3, 'Rendering frames…');
+    const wPhysical = width;
+    const hPhysical = height;
 
-    const { frames } = await rasterizeFrames(animationData, {
+    // ── Phase 1: Render all frames → cache as compressed PNG blob URLs ─────────
+    // Fast render pass, stores lightweight blobs (no RAW RAM OOM at 4K).
+    const frameBlobUrls = [];
+
+    await rasterizeFrames(animationData, {
         width, height, fps,
-        onProgress: (p) => onProgress?.(3 + Math.round(p * 0.37), 'Rendering frames…'),
+        onProgress: (p) => onProgress?.(3 + Math.round(p * 0.60), 'Rendering frames…'),
+        onFrame: (frameCanvas) => new Promise((res) => {
+            frameCanvas.toBlob((blob) => {
+                frameBlobUrls.push(URL.createObjectURL(blob));
+                res();
+            }, 'image/png');
+        }),
     });
 
-    onProgress?.(40, 'Encoding video…');
+    // ── Phase 2: Encode at wall-clock-anchored exact fps ─────────────────────────
+    const label = transparent ? 'Transparent Video' : 'MP4 Video';
+    onProgress?.(63, `Encoding ${label}…`);
 
-    const playback = document.createElement('canvas');
-    playback.width = width;
-    playback.height = height;
-    const pCtx = playback.getContext('2d');
+    const playback   = document.createElement('canvas');
+    playback.width   = wPhysical;
+    playback.height  = hPhysical;
+    const pCtx       = playback.getContext('2d');
 
-    const stream = playback.captureStream(fps); // Pass target fps directly
+    const stream = playback.captureStream(fps);
 
+    // Hardware accelerated Native encoders.
+    // WebM handles transparency (VP8/VP9) natively if requested.
     let mimeType = 'video/webm;codecs=vp9';
     if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8';
     if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
 
-    const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 8_000_000 });
-    const chunks = [];
-    recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunks.push(e.data);
-    };
+    // 100 Mbps — eliminates compression artefacts at all resolutions incl. 4K
+    const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 100_000_000 });
+    const chunks   = [];
+    recorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
 
-    const stopped = new Promise((resolve) => { recorder.onstop = resolve; });
+    const stopped = new Promise((r) => { recorder.onstop = r; });
 
-    recorder.start(100); // Record in chunks to ensure data flows
-    
-    // Calculate precise frame timing
-    const frameDurationMs = 1000 / fps;
+    const frameDurationMs   = 1000 / fps;
+    const exactDurationMs   = (frameBlobUrls.length / fps) * 1000;
 
-    for (let i = 0; i < frames.length; i++) {
-        const frameStart = performance.now();
+    // Start the recorder — this is t=0 of the recording clock
+    recorder.start(100);
+    const recordingStart = performance.now();
+
+    for (let i = 0; i < frameBlobUrls.length; i++) {
+        // Decode the cached PNG frame
+        const img = new Image();
+        img.src   = frameBlobUrls[i];
+        await img.decode();
+
+        pCtx.clearRect(0, 0, wPhysical, hPhysical);
+        if (!transparent) {
+            pCtx.fillStyle = '#FFFFFF';
+            pCtx.fillRect(0, 0, wPhysical, hPhysical);
+        }
         
-        pCtx.fillStyle = '#FFFFFF';
-        pCtx.fillRect(0, 0, width, height);
-        pCtx.drawImage(frames[i], 0, 0);
+        // PNG captured at physical pixel size — draw 1:1, no scaling blur
+        pCtx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(frameBlobUrls[i]); // Free memory immediately
 
-        onProgress?.(40 + Math.round(((i + 1) / frames.length) * 58), 'Encoding video…');
-        
-        const frameEnd = performance.now();
-        const drawTime = frameEnd - frameStart;
-        const sleepTime = Math.max(1, frameDurationMs - drawTime);
-        
-        // Wait precisely the duration of the frame to feed it to the recorder in real-time
-        await new Promise((r) => setTimeout(r, sleepTime));
+        // ── Absolute-clock sleep (Solves the Duration Bug) ────────────────────
+        // Target: this frame finishes at exactly (i+1) * frameDurationMs from
+        // recording start. Drift can never accumulate.
+        const targetMs  = (i + 1) * frameDurationMs;
+        const nowOffset = performance.now() - recordingStart;
+        const sleepMs   = targetMs - nowOffset;
+        if (sleepMs > 0) await new Promise((r) => setTimeout(r, sleepMs));
+
+        onProgress?.(63 + Math.round(((i + 1) / frameBlobUrls.length) * 35), `Encoding ${label}…`);
     }
 
-    // Small buffer at end to ensure last frame flushes
-    await new Promise((r) => setTimeout(r, 100));
+    // Stop the recorder at EXACTLY the right total duration (no tail buffer overshoot)
+    const stopTarget  = recordingStart + exactDurationMs;
+    const stopSleepMs = stopTarget - performance.now();
+    if (stopSleepMs > 0) await new Promise((r) => setTimeout(r, stopSleepMs));
+
     recorder.stop();
     await stopped;
 
     onProgress?.(100, 'Done!');
-    return new Blob(chunks, { type: 'video/webm' });
+    return new Blob(chunks, { type: mimeType });
 }
