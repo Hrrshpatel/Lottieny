@@ -10,6 +10,7 @@ export const formatBytes = (bytes, decimals = 2) => {
 };
 
 const WATERMARK_SIGNATURE = new Set([
+    // Lottielab Watermark Signatures
     "c5bc8fdda61830d96be4874ab959f66a",
     "5a43f5f674f0bad3c21f9e5c95fee0b0",
     "14fa378de772d8a7b1686bbd0b6edf37",
@@ -31,7 +32,27 @@ const WATERMARK_SIGNATURE = new Set([
     "0ed3d5f0427e7331dd451d7477d219a6",
     "e006ff964315836518cae396a13a9b12",
     "679f6411be05919ab16aa1ef433d5594",
-    "d33d94e1ccecbfb105f6055bbda8b581"
+    "d33d94e1ccecbfb105f6055bbda8b581",
+    // Jitter Watermark Signatures
+    "fe99ab48db28cfff54a9c9bb4f31e119",
+    "bc9aaf2ce4e62b085d41bcd96bf7353c",
+    "aba0a5d781e1879ad8daa97ff0d60bc9",
+    "2d1d34ca0364381b0ebb0fdf4ea9a403",
+    "95e496ea09c2c4be5b24cc0ecb72a950",
+    "d455cd4482bf6b143039b55c2ae58972",
+    "781322cb4331a1ec1fe3dad12645b113",
+    "49a77f5b24cb6e52ad79e69c7b241d70",
+    "cb7fc2511dc4c4657cfdbf52f4deb6c6",
+    "1594a4f65244877499c37967ae2319a4",
+    "f9398ecaf6ebb435125986cb3269082e",
+    "6cd0c95221fad00bab7792d58f44f329",
+    "c0c518170a18ab09ed8e141ce1dc22ee",
+    "2c0bb96497453575b6278523eb7b4d4d",
+    "eeb7f20d0dc7b3f8c9bd1eab6345dfcb",
+    "e1b57617f6b58f5d882a3682f20341cc",
+    "caffe3b243965623a64a00ed4724a1e8",
+    "456889588e05897c422df564cf17cdf5",
+    "8a9e5a970aefbd9bee36ab53b27e381a"
 ]);
 
 function isWatermarkLayer(layer) {
@@ -80,6 +101,8 @@ export const processLottie = (originalJson) => {
             pathsRemoved: 0,
         };
 
+        const removedAssetIds = new Set();
+
         function stripWatermarks(node) {
             if (!node) return;
 
@@ -87,6 +110,9 @@ export const processLottie = (originalJson) => {
             if (Array.isArray(node)) {
                 for (let i = node.length - 1; i >= 0; i--) {
                     if (isWatermarkLayer(node[i])) {
+                        if (node[i].id) {
+                            removedAssetIds.add(node[i].id);
+                        }
                         result.watermarksRemoved++;
                         result.pathsRemoved++;
                         node.splice(i, 1);
@@ -95,11 +121,13 @@ export const processLottie = (originalJson) => {
                     }
                 }
             } else if (typeof node === 'object') {
-                // In Lottie, nested elements are typically under 'layers' or 'it' (items inside shapes) or 'assets'
                 ['layers', 'it', 'assets'].forEach(arrKey => {
                     if (Array.isArray(node[arrKey])) {
                         for (let i = node[arrKey].length - 1; i >= 0; i--) {
                             if (isWatermarkLayer(node[arrKey][i])) {
+                                if (node[arrKey][i].id) {
+                                    removedAssetIds.add(node[arrKey][i].id);
+                                }
                                 result.watermarksRemoved++;
                                 result.pathsRemoved++;
                                 node[arrKey].splice(i, 1);
@@ -111,7 +139,6 @@ export const processLottie = (originalJson) => {
                 });
 
                 Object.values(node).forEach(child => {
-                    // Only traverse objects or arrays not already handled
                     if (child !== node['layers'] && child !== node['it'] && child !== node['assets'] && typeof child === 'object') {
                         stripWatermarks(child);
                     }
@@ -122,6 +149,46 @@ export const processLottie = (originalJson) => {
         // Traverse starting from root to strip watermarks hierarchically 
         stripWatermarks(json);
 
+        // Cleanup dangling asset & layer references caused by removing watermark assets
+        if (removedAssetIds.size > 0) {
+            let changed = true;
+            while (changed) {
+                changed = false;
+
+                // Check assets array for any asset referencing a removed asset
+                if (Array.isArray(json.assets)) {
+                    for (let i = json.assets.length - 1; i >= 0; i--) {
+                        const asset = json.assets[i];
+                        const referencesRemoved = asset.layers?.some(l => l.refId && removedAssetIds.has(l.refId));
+                        if (referencesRemoved) {
+                            removedAssetIds.add(asset.id);
+                            json.assets.splice(i, 1);
+                            changed = true;
+                        }
+                    }
+                }
+
+                // Check layers array for any layer referencing a removed asset
+                const checkLayers = (layerArr) => {
+                    if (!Array.isArray(layerArr)) return;
+                    for (let i = layerArr.length - 1; i >= 0; i--) {
+                        const layer = layerArr[i];
+                        if (layer.refId && removedAssetIds.has(layer.refId)) {
+                            layerArr.splice(i, 1);
+                            changed = true;
+                        } else if (layer.layers) {
+                            checkLayers(layer.layers);
+                        }
+                    }
+                };
+
+                checkLayers(json.layers);
+                if (Array.isArray(json.assets)) {
+                    json.assets.forEach(a => checkLayers(a.layers));
+                }
+            }
+        }
+
         // Optimization: traverse surviving JSON and shrink decimals deterministically
         const processNode = (node) => {
             if (!node) return node;
@@ -130,11 +197,6 @@ export const processLottie = (originalJson) => {
             } else if (typeof node === 'object') {
                 const newNode = {};
                 for (const [key, value] of Object.entries(node)) {
-                    // If a comp layer points to assets, we might want to clean those assets too.
-                    // But instructions explicitly requested:
-                    // json.layers = json.layers.filter(layer => !isWatermarkLayer(layer));
-                    // DO NOT modify parent hierarchy etc.
-                    // So we only round decimals globally
                     newNode[key] = processNode(value);
                 }
                 return newNode;
