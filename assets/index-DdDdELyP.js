@@ -12845,12 +12845,12 @@ function requireLottie() {
         var i;
         var f;
         var p;
-        var q;
+        var q2;
         var t;
         i = Math.floor(h * 6);
         f = h * 6 - i;
         p = v * (1 - s);
-        q = v * (1 - f * s);
+        q2 = v * (1 - f * s);
         t = v * (1 - (1 - f) * s);
         switch (i % 6) {
           case 0:
@@ -12859,7 +12859,7 @@ function requireLottie() {
             b = p;
             break;
           case 1:
-            r = q;
+            r = q2;
             g = v;
             b = p;
             break;
@@ -12870,7 +12870,7 @@ function requireLottie() {
             break;
           case 3:
             r = p;
-            g = q;
+            g = q2;
             b = v;
             break;
           case 4:
@@ -12881,7 +12881,7 @@ function requireLottie() {
           case 5:
             r = v;
             g = p;
-            b = q;
+            b = q2;
             break;
         }
         return [r, g, b];
@@ -13041,7 +13041,7 @@ function requireLottie() {
                   var layerData;
                   var i;
                   var len = layers.length;
-                  var j;
+                  var j2;
                   var jLen;
                   var k;
                   var kLen;
@@ -13052,17 +13052,17 @@ function requireLottie() {
                       if (layerData.hasMask) {
                         var maskProps = layerData.masksProperties;
                         jLen = maskProps.length;
-                        for (j = 0; j < jLen; j += 1) {
-                          if (maskProps[j].pt.k.i) {
-                            convertPathsToAbsoluteValues(maskProps[j].pt.k);
+                        for (j2 = 0; j2 < jLen; j2 += 1) {
+                          if (maskProps[j2].pt.k.i) {
+                            convertPathsToAbsoluteValues(maskProps[j2].pt.k);
                           } else {
-                            kLen = maskProps[j].pt.k.length;
+                            kLen = maskProps[j2].pt.k.length;
                             for (k = 0; k < kLen; k += 1) {
-                              if (maskProps[j].pt.k[k].s) {
-                                convertPathsToAbsoluteValues(maskProps[j].pt.k[k].s[0]);
+                              if (maskProps[j2].pt.k[k].s) {
+                                convertPathsToAbsoluteValues(maskProps[j2].pt.k[k].s[0]);
                               }
-                              if (maskProps[j].pt.k[k].e) {
-                                convertPathsToAbsoluteValues(maskProps[j].pt.k[k].e[0]);
+                              if (maskProps[j2].pt.k[k].e) {
+                                convertPathsToAbsoluteValues(maskProps[j2].pt.k[k].e[0]);
                               }
                             }
                           }
@@ -13116,7 +13116,7 @@ function requireLottie() {
                 function completeShapes(arr) {
                   var i;
                   var len = arr.length;
-                  var j;
+                  var j2;
                   var jLen;
                   for (i = len - 1; i >= 0; i -= 1) {
                     if (arr[i].ty === "sh") {
@@ -13124,12 +13124,12 @@ function requireLottie() {
                         convertPathsToAbsoluteValues(arr[i].ks.k);
                       } else {
                         jLen = arr[i].ks.k.length;
-                        for (j = 0; j < jLen; j += 1) {
-                          if (arr[i].ks.k[j].s) {
-                            convertPathsToAbsoluteValues(arr[i].ks.k[j].s[0]);
+                        for (j2 = 0; j2 < jLen; j2 += 1) {
+                          if (arr[i].ks.k[j2].s) {
+                            convertPathsToAbsoluteValues(arr[i].ks.k[j2].s[0]);
                           }
-                          if (arr[i].ks.k[j].e) {
-                            convertPathsToAbsoluteValues(arr[i].ks.k[j].e[0]);
+                          if (arr[i].ks.k[j2].e) {
+                            convertPathsToAbsoluteValues(arr[i].ks.k[j2].e[0]);
                           }
                         }
                       }
@@ -13334,7 +13334,7 @@ function requireLottie() {
                   function iterateShapes(shapes) {
                     var i;
                     var len = shapes.length;
-                    var j;
+                    var j2;
                     var jLen;
                     for (i = 0; i < len; i += 1) {
                       if (shapes[i].ty === "gr") {
@@ -13342,18 +13342,18 @@ function requireLottie() {
                       } else if (shapes[i].ty === "fl" || shapes[i].ty === "st") {
                         if (shapes[i].c.k && shapes[i].c.k[0].i) {
                           jLen = shapes[i].c.k.length;
-                          for (j = 0; j < jLen; j += 1) {
-                            if (shapes[i].c.k[j].s) {
-                              shapes[i].c.k[j].s[0] /= 255;
-                              shapes[i].c.k[j].s[1] /= 255;
-                              shapes[i].c.k[j].s[2] /= 255;
-                              shapes[i].c.k[j].s[3] /= 255;
+                          for (j2 = 0; j2 < jLen; j2 += 1) {
+                            if (shapes[i].c.k[j2].s) {
+                              shapes[i].c.k[j2].s[0] /= 255;
+                              shapes[i].c.k[j2].s[1] /= 255;
+                              shapes[i].c.k[j2].s[2] /= 255;
+                              shapes[i].c.k[j2].s[3] /= 255;
                             }
-                            if (shapes[i].c.k[j].e) {
-                              shapes[i].c.k[j].e[0] /= 255;
-                              shapes[i].c.k[j].e[1] /= 255;
-                              shapes[i].c.k[j].e[2] /= 255;
-                              shapes[i].c.k[j].e[3] /= 255;
+                            if (shapes[i].c.k[j2].e) {
+                              shapes[i].c.k[j2].e[0] /= 255;
+                              shapes[i].c.k[j2].e[1] /= 255;
+                              shapes[i].c.k[j2].e[2] /= 255;
+                              shapes[i].c.k[j2].e[3] /= 255;
                             }
                           }
                         } else {
@@ -13394,7 +13394,7 @@ function requireLottie() {
                   function completeClosingShapes(arr) {
                     var i;
                     var len = arr.length;
-                    var j;
+                    var j2;
                     var jLen;
                     for (i = len - 1; i >= 0; i -= 1) {
                       if (arr[i].ty === "sh") {
@@ -13402,12 +13402,12 @@ function requireLottie() {
                           arr[i].ks.k.c = arr[i].closed;
                         } else {
                           jLen = arr[i].ks.k.length;
-                          for (j = 0; j < jLen; j += 1) {
-                            if (arr[i].ks.k[j].s) {
-                              arr[i].ks.k[j].s[0].c = arr[i].closed;
+                          for (j2 = 0; j2 < jLen; j2 += 1) {
+                            if (arr[i].ks.k[j2].s) {
+                              arr[i].ks.k[j2].s[0].c = arr[i].closed;
                             }
-                            if (arr[i].ks.k[j].e) {
-                              arr[i].ks.k[j].e[0].c = arr[i].closed;
+                            if (arr[i].ks.k[j2].e) {
+                              arr[i].ks.k[j2].e[0].c = arr[i].closed;
                             }
                           }
                         }
@@ -13420,7 +13420,7 @@ function requireLottie() {
                     var layerData;
                     var i;
                     var len = layers.length;
-                    var j;
+                    var j2;
                     var jLen;
                     var k;
                     var kLen;
@@ -13429,17 +13429,17 @@ function requireLottie() {
                       if (layerData.hasMask) {
                         var maskProps = layerData.masksProperties;
                         jLen = maskProps.length;
-                        for (j = 0; j < jLen; j += 1) {
-                          if (maskProps[j].pt.k.i) {
-                            maskProps[j].pt.k.c = maskProps[j].cl;
+                        for (j2 = 0; j2 < jLen; j2 += 1) {
+                          if (maskProps[j2].pt.k.i) {
+                            maskProps[j2].pt.k.c = maskProps[j2].cl;
                           } else {
-                            kLen = maskProps[j].pt.k.length;
+                            kLen = maskProps[j2].pt.k.length;
                             for (k = 0; k < kLen; k += 1) {
-                              if (maskProps[j].pt.k[k].s) {
-                                maskProps[j].pt.k[k].s[0].c = maskProps[j].cl;
+                              if (maskProps[j2].pt.k[k].s) {
+                                maskProps[j2].pt.k[k].s[0].c = maskProps[j2].cl;
                               }
-                              if (maskProps[j].pt.k[k].e) {
-                                maskProps[j].pt.k[k].e[0].c = maskProps[j].cl;
+                              if (maskProps[j2].pt.k[k].e) {
+                                maskProps[j2].pt.k[k].e[0].c = maskProps[j2].cl;
                               }
                             }
                           }
@@ -14094,13 +14094,13 @@ function requireLottie() {
         var i;
         var len = layers.length;
         var newLayers = data2.layers;
-        var j;
+        var j2;
         var jLen = newLayers.length;
-        for (j = 0; j < jLen; j += 1) {
+        for (j2 = 0; j2 < jLen; j2 += 1) {
           i = 0;
           while (i < len) {
-            if (layers[i].id === newLayers[j].id) {
-              layers[i] = newLayers[j];
+            if (layers[i].id === newLayers[j2].id) {
+              layers[i] = newLayers[j2];
               break;
             }
             i += 1;
@@ -15284,7 +15284,7 @@ function requireLottie() {
         var kLen;
         var perc;
         var jLen;
-        var j;
+        var j2;
         var fnc;
         var nextKeyTime = nextKeyData.t - offsetTime;
         var keyTime = keyData.t - offsetTime;
@@ -15311,33 +15311,33 @@ function requireLottie() {
             var distanceInLine = bezierData.segmentLength * perc;
             var segmentPerc;
             var addedLength = caching.lastFrame < frameNum && caching._lastKeyframeIndex === i ? caching._lastAddedLength : 0;
-            j = caching.lastFrame < frameNum && caching._lastKeyframeIndex === i ? caching._lastPoint : 0;
+            j2 = caching.lastFrame < frameNum && caching._lastKeyframeIndex === i ? caching._lastPoint : 0;
             flag = true;
             jLen = bezierData.points.length;
             while (flag) {
-              addedLength += bezierData.points[j].partialLength;
-              if (distanceInLine === 0 || perc === 0 || j === bezierData.points.length - 1) {
-                kLen = bezierData.points[j].point.length;
+              addedLength += bezierData.points[j2].partialLength;
+              if (distanceInLine === 0 || perc === 0 || j2 === bezierData.points.length - 1) {
+                kLen = bezierData.points[j2].point.length;
                 for (k = 0; k < kLen; k += 1) {
-                  newValue[k] = bezierData.points[j].point[k];
+                  newValue[k] = bezierData.points[j2].point[k];
                 }
                 break;
-              } else if (distanceInLine >= addedLength && distanceInLine < addedLength + bezierData.points[j + 1].partialLength) {
-                segmentPerc = (distanceInLine - addedLength) / bezierData.points[j + 1].partialLength;
-                kLen = bezierData.points[j].point.length;
+              } else if (distanceInLine >= addedLength && distanceInLine < addedLength + bezierData.points[j2 + 1].partialLength) {
+                segmentPerc = (distanceInLine - addedLength) / bezierData.points[j2 + 1].partialLength;
+                kLen = bezierData.points[j2].point.length;
                 for (k = 0; k < kLen; k += 1) {
-                  newValue[k] = bezierData.points[j].point[k] + (bezierData.points[j + 1].point[k] - bezierData.points[j].point[k]) * segmentPerc;
+                  newValue[k] = bezierData.points[j2].point[k] + (bezierData.points[j2 + 1].point[k] - bezierData.points[j2].point[k]) * segmentPerc;
                 }
                 break;
               }
-              if (j < jLen - 1) {
-                j += 1;
+              if (j2 < jLen - 1) {
+                j2 += 1;
               } else {
                 flag = false;
               }
             }
-            caching._lastPoint = j;
-            caching._lastAddedLength = addedLength - bezierData.points[j].partialLength;
+            caching._lastPoint = j2;
+            caching._lastAddedLength = addedLength - bezierData.points[j2].partialLength;
             caching._lastKeyframeIndex = i;
           }
         } else {
@@ -15910,7 +15910,7 @@ function requireLottie() {
           var keyPropS;
           var keyPropE;
           var isHold;
-          var j;
+          var j2;
           var k;
           var jLen;
           var kLen;
@@ -15968,14 +15968,14 @@ function requireLottie() {
           jLen = previousValue._length;
           kLen = keyPropS.i[0].length;
           caching.lastIndex = iterationIndex;
-          for (j = 0; j < jLen; j += 1) {
+          for (j2 = 0; j2 < jLen; j2 += 1) {
             for (k = 0; k < kLen; k += 1) {
-              vertexValue = isHold ? keyPropS.i[j][k] : keyPropS.i[j][k] + (keyPropE.i[j][k] - keyPropS.i[j][k]) * perc;
-              previousValue.i[j][k] = vertexValue;
-              vertexValue = isHold ? keyPropS.o[j][k] : keyPropS.o[j][k] + (keyPropE.o[j][k] - keyPropS.o[j][k]) * perc;
-              previousValue.o[j][k] = vertexValue;
-              vertexValue = isHold ? keyPropS.v[j][k] : keyPropS.v[j][k] + (keyPropE.v[j][k] - keyPropS.v[j][k]) * perc;
-              previousValue.v[j][k] = vertexValue;
+              vertexValue = isHold ? keyPropS.i[j2][k] : keyPropS.i[j2][k] + (keyPropE.i[j2][k] - keyPropS.i[j2][k]) * perc;
+              previousValue.i[j2][k] = vertexValue;
+              vertexValue = isHold ? keyPropS.o[j2][k] : keyPropS.o[j2][k] + (keyPropE.o[j2][k] - keyPropS.o[j2][k]) * perc;
+              previousValue.o[j2][k] = vertexValue;
+              vertexValue = isHold ? keyPropS.v[j2][k] : keyPropS.v[j2][k] + (keyPropE.v[j2][k] - keyPropS.v[j2][k]) * perc;
+              previousValue.v[j2][k] = vertexValue;
             }
           }
         }
@@ -16464,7 +16464,7 @@ function requireLottie() {
           }
           return this._t(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1);
         }
-        function setTransform(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) {
+        function setTransform(a, b, c, d, e, f, g, h, i, j2, k, l, m, n, o, p) {
           this.props[0] = a;
           this.props[1] = b;
           this.props[2] = c;
@@ -16474,7 +16474,7 @@ function requireLottie() {
           this.props[6] = g;
           this.props[7] = h;
           this.props[8] = i;
-          this.props[9] = j;
+          this.props[9] = j2;
           this.props[10] = k;
           this.props[11] = l;
           this.props[12] = m;
@@ -16602,9 +16602,9 @@ function requireLottie() {
           inverseMatrix.props[13] = f;
           return inverseMatrix;
         }
-        function inversePoint(pt) {
+        function inversePoint(pt2) {
           var inverseMatrix = this.getInverseMatrix();
-          return inverseMatrix.applyToPointArray(pt[0], pt[1], pt[2] || 0);
+          return inverseMatrix.applyToPointArray(pt2[0], pt2[1], pt2[2] || 0);
         }
         function inversePoints(pts) {
           var i;
@@ -17016,7 +17016,7 @@ function requireLottie() {
         var shapePaths;
         var i;
         var len = this.shapes.length;
-        var j;
+        var j2;
         var jLen;
         var pathsData;
         var pathData;
@@ -17047,8 +17047,8 @@ function requireLottie() {
                 totalShapeLength = shapeData.totalShapeLength;
               } else {
                 pathsData = this.releasePathsData(shapeData.pathsData);
-                for (j = 0; j < jLen; j += 1) {
-                  pathData = bez.getSegmentsLength(shapePaths.shapes[j]);
+                for (j2 = 0; j2 < jLen; j2 += 1) {
+                  pathData = bez.getSegmentsLength(shapePaths.shapes[j2]);
                   pathsData.push(pathData);
                   totalShapeLength += pathData.totalLength;
                 }
@@ -17075,9 +17075,9 @@ function requireLottie() {
                 edges = [[shapeS, shapeE]];
               }
               jLen = edges.length;
-              for (j = 0; j < jLen; j += 1) {
-                shapeS = edges[j][0];
-                shapeE = edges[j][1];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                shapeS = edges[j2][0];
+                shapeE = edges[j2][1];
                 segments.length = 0;
                 if (shapeE <= 1) {
                   segments.push({
@@ -17153,7 +17153,7 @@ function requireLottie() {
         var shapePaths = shapeData.shape.paths.shapes;
         var i;
         var len = shapeData.shape.paths._length;
-        var j;
+        var j2;
         var jLen;
         var addedLength = 0;
         var currentLengthData;
@@ -17176,8 +17176,8 @@ function requireLottie() {
           lengths = pathsData[i].lengths;
           shapePath.c = shapePaths[i].c;
           jLen = shapePaths[i].c ? lengths.length : lengths.length + 1;
-          for (j = 1; j < jLen; j += 1) {
-            currentLengthData = lengths[j - 1];
+          for (j2 = 1; j2 < jLen; j2 += 1) {
+            currentLengthData = lengths[j2 - 1];
             if (addedLength + currentLengthData.addedLength < shapeSegment.s) {
               addedLength += currentLengthData.addedLength;
               shapePath.c = false;
@@ -17186,10 +17186,10 @@ function requireLottie() {
               break;
             } else {
               if (shapeSegment.s <= addedLength && shapeSegment.e >= addedLength + currentLengthData.addedLength) {
-                this.addSegment(shapePaths[i].v[j - 1], shapePaths[i].o[j - 1], shapePaths[i].i[j], shapePaths[i].v[j], shapePath, segmentCount, newShape);
+                this.addSegment(shapePaths[i].v[j2 - 1], shapePaths[i].o[j2 - 1], shapePaths[i].i[j2], shapePaths[i].v[j2], shapePath, segmentCount, newShape);
                 newShape = false;
               } else {
-                segment = bez.getNewSegment(shapePaths[i].v[j - 1], shapePaths[i].v[j], shapePaths[i].o[j - 1], shapePaths[i].i[j], (shapeSegment.s - addedLength) / currentLengthData.addedLength, (shapeSegment.e - addedLength) / currentLengthData.addedLength, lengths[j - 1]);
+                segment = bez.getNewSegment(shapePaths[i].v[j2 - 1], shapePaths[i].v[j2], shapePaths[i].o[j2 - 1], shapePaths[i].i[j2], (shapeSegment.s - addedLength) / currentLengthData.addedLength, (shapeSegment.e - addedLength) / currentLengthData.addedLength, lengths[j2 - 1]);
                 this.addSegmentFromArray(segment, shapePath, segmentCount, newShape);
                 newShape = false;
                 shapePath.c = false;
@@ -17199,14 +17199,14 @@ function requireLottie() {
             }
           }
           if (shapePaths[i].c && lengths.length) {
-            currentLengthData = lengths[j - 1];
+            currentLengthData = lengths[j2 - 1];
             if (addedLength <= shapeSegment.e) {
-              var segmentLength = lengths[j - 1].addedLength;
+              var segmentLength = lengths[j2 - 1].addedLength;
               if (shapeSegment.s <= addedLength && shapeSegment.e >= addedLength + segmentLength) {
-                this.addSegment(shapePaths[i].v[j - 1], shapePaths[i].o[j - 1], shapePaths[i].i[0], shapePaths[i].v[0], shapePath, segmentCount, newShape);
+                this.addSegment(shapePaths[i].v[j2 - 1], shapePaths[i].o[j2 - 1], shapePaths[i].i[0], shapePaths[i].v[0], shapePath, segmentCount, newShape);
                 newShape = false;
               } else {
-                segment = bez.getNewSegment(shapePaths[i].v[j - 1], shapePaths[i].v[0], shapePaths[i].o[j - 1], shapePaths[i].i[0], (shapeSegment.s - addedLength) / segmentLength, (shapeSegment.e - addedLength) / segmentLength, lengths[j - 1]);
+                segment = bez.getNewSegment(shapePaths[i].v[j2 - 1], shapePaths[i].v[0], shapePaths[i].o[j2 - 1], shapePaths[i].i[0], (shapeSegment.s - addedLength) / segmentLength, (shapeSegment.e - addedLength) / segmentLength, lengths[j2 - 1]);
                 this.addSegmentFromArray(segment, shapePath, segmentCount, newShape);
                 newShape = false;
                 shapePath.c = false;
@@ -17275,7 +17275,7 @@ function requireLottie() {
         var shapePaths;
         var i;
         var len = this.shapes.length;
-        var j;
+        var j2;
         var jLen;
         var amount = this.amount.v;
         if (amount !== 0) {
@@ -17289,8 +17289,8 @@ function requireLottie() {
               shapeData.shape._mdf = true;
               shapePaths = shapeData.shape.paths.shapes;
               jLen = shapeData.shape.paths._length;
-              for (j = 0; j < jLen; j += 1) {
-                localShapeCollection.addShape(this.processPath(shapePaths[j], amount));
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                localShapeCollection.addShape(this.processPath(shapePaths[j2], amount));
               }
             }
             shapeData.shape.paths = shapeData.localShapeCollection;
@@ -17728,7 +17728,7 @@ function requireLottie() {
           i = this.data.m === 1 ? 0 : this._currentCopies - 1;
           dir = this.data.m === 1 ? 1 : -1;
           cont = this._currentCopies;
-          var j;
+          var j2;
           var jLen;
           while (cont) {
             items = this.elemsData[i].it;
@@ -17744,14 +17744,14 @@ function requireLottie() {
               this.matrix.transform(rProps[0], rProps[1], rProps[2], rProps[3], rProps[4], rProps[5], rProps[6], rProps[7], rProps[8], rProps[9], rProps[10], rProps[11], rProps[12], rProps[13], rProps[14], rProps[15]);
               this.matrix.transform(sProps[0], sProps[1], sProps[2], sProps[3], sProps[4], sProps[5], sProps[6], sProps[7], sProps[8], sProps[9], sProps[10], sProps[11], sProps[12], sProps[13], sProps[14], sProps[15]);
               this.matrix.transform(pProps[0], pProps[1], pProps[2], pProps[3], pProps[4], pProps[5], pProps[6], pProps[7], pProps[8], pProps[9], pProps[10], pProps[11], pProps[12], pProps[13], pProps[14], pProps[15]);
-              for (j = 0; j < jLen; j += 1) {
-                itemsTransform[j] = this.matrix.props[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                itemsTransform[j2] = this.matrix.props[j2];
               }
               this.matrix.reset();
             } else {
               this.matrix.reset();
-              for (j = 0; j < jLen; j += 1) {
-                itemsTransform[j] = this.matrix.props[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                itemsTransform[j2] = this.matrix.props[j2];
               }
             }
             iteration += 1;
@@ -17852,7 +17852,7 @@ function requireLottie() {
         var shapePaths;
         var i;
         var len = this.shapes.length;
-        var j;
+        var j2;
         var jLen;
         var rd = this.rd.v;
         if (rd !== 0) {
@@ -17866,8 +17866,8 @@ function requireLottie() {
               shapeData.shape._mdf = true;
               shapePaths = shapeData.shape.paths.shapes;
               jLen = shapeData.shape.paths._length;
-              for (j = 0; j < jLen; j += 1) {
-                localShapeCollection.addShape(this.processPath(shapePaths[j], rd));
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                localShapeCollection.addShape(this.processPath(shapePaths[j2], rd));
               }
             }
             shapeData.shape.paths = shapeData.localShapeCollection;
@@ -18145,7 +18145,7 @@ function requireLottie() {
         var shapePaths;
         var i;
         var len = this.shapes.length;
-        var j;
+        var j2;
         var jLen;
         var amplitude = this.amplitude.v;
         var frequency = Math.max(0, Math.round(this.frequency.v));
@@ -18161,8 +18161,8 @@ function requireLottie() {
               shapeData.shape._mdf = true;
               shapePaths = shapeData.shape.paths.shapes;
               jLen = shapeData.shape.paths._length;
-              for (j = 0; j < jLen; j += 1) {
-                localShapeCollection.addShape(this.processPath(shapePaths[j], amplitude, frequency, pointType));
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                localShapeCollection.addShape(this.processPath(shapePaths[j2], amplitude, frequency, pointType));
               }
             }
             shapeData.shape.paths = shapeData.localShapeCollection;
@@ -18301,7 +18301,7 @@ function requireLottie() {
           count -= 1;
         }
         var i;
-        var j;
+        var j2;
         var segment;
         var multiSegments = [];
         for (i = 0; i < count; i += 1) {
@@ -18321,8 +18321,8 @@ function requireLottie() {
           var multiSegment = multiSegments[i];
           if (lastSeg) lastPoint = joinLines(outputBezier, lastSeg, multiSegment[0], lineJoin, miterLimit);
           lastSeg = multiSegment[multiSegment.length - 1];
-          for (j = 0; j < multiSegment.length; j += 1) {
-            segment = multiSegment[j];
+          for (j2 = 0; j2 < multiSegment.length; j2 += 1) {
+            segment = multiSegment[j2];
             if (lastPoint && pointEqual(segment.points[0], lastPoint)) {
               outputBezier.setXYAt(segment.points[1][0], segment.points[1][1], "o", outputBezier.length() - 1);
             } else {
@@ -18339,7 +18339,7 @@ function requireLottie() {
         var shapePaths;
         var i;
         var len = this.shapes.length;
-        var j;
+        var j2;
         var jLen;
         var amount = this.amount.v;
         var miterLimit = this.miterLimit.v;
@@ -18355,8 +18355,8 @@ function requireLottie() {
               shapeData.shape._mdf = true;
               shapePaths = shapeData.shape.paths.shapes;
               jLen = shapeData.shape.paths._length;
-              for (j = 0; j < jLen; j += 1) {
-                localShapeCollection.addShape(this.processPath(shapePaths[j], amount, lineJoin, miterLimit));
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                localShapeCollection.addShape(this.processPath(shapePaths[j2], amount, lineJoin, miterLimit));
               }
             }
             shapeData.shape.paths = shapeData.localShapeCollection;
@@ -18557,7 +18557,7 @@ function requireLottie() {
           for (i = 0; i < len; i += 1) {
             var shouldLoadFont = true;
             var loadedSelector;
-            var j;
+            var j2;
             fontArr[i].loaded = false;
             fontArr[i].monoCase = setUpNode(fontArr[i].fFamily, "monospace");
             fontArr[i].sansCase = setUpNode(fontArr[i].fFamily, "sans-serif");
@@ -18580,8 +18580,8 @@ function requireLottie() {
               }
             } else if (fontArr[i].fOrigin === "g" || fontArr[i].origin === 1) {
               loadedSelector = document.querySelectorAll('link[f-forigin="g"], link[f-origin="1"]');
-              for (j = 0; j < loadedSelector.length; j += 1) {
-                if (loadedSelector[j].href.indexOf(fontArr[i].fPath) !== -1) {
+              for (j2 = 0; j2 < loadedSelector.length; j2 += 1) {
+                if (loadedSelector[j2].href.indexOf(fontArr[i].fPath) !== -1) {
                   shouldLoadFont = false;
                 }
               }
@@ -18596,8 +18596,8 @@ function requireLottie() {
               }
             } else if (fontArr[i].fOrigin === "t" || fontArr[i].origin === 2) {
               loadedSelector = document.querySelectorAll('script[f-forigin="t"], script[f-origin="2"]');
-              for (j = 0; j < loadedSelector.length; j += 1) {
-                if (fontArr[i].fPath === loadedSelector[j].src) {
+              for (j2 = 0; j2 < loadedSelector.length; j2 += 1) {
+                if (fontArr[i].fPath === loadedSelector[j2].src) {
                   shouldLoadFont = false;
                 }
               }
@@ -18629,17 +18629,17 @@ function requireLottie() {
           }
           var i;
           var len = chars.length;
-          var j;
+          var j2;
           var jLen = this.chars.length;
           var found;
           for (i = 0; i < len; i += 1) {
-            j = 0;
+            j2 = 0;
             found = false;
-            while (j < jLen) {
-              if (this.chars[j].style === chars[i].style && this.chars[j].fFamily === chars[i].fFamily && this.chars[j].ch === chars[i].ch) {
+            while (j2 < jLen) {
+              if (this.chars[j2].style === chars[i].style && this.chars[j2].fFamily === chars[i].fFamily && this.chars[j2].ch === chars[i].ch) {
                 found = true;
               }
-              j += 1;
+              j2 += 1;
             }
             if (!found) {
               this.chars.push(chars[i]);
@@ -19253,16 +19253,16 @@ function requireLottie() {
         this.completeLayers = false;
         var i;
         var len = newLayers.length;
-        var j;
+        var j2;
         var jLen = this.layers.length;
         for (i = 0; i < len; i += 1) {
-          j = 0;
-          while (j < jLen) {
-            if (this.layers[j].id === newLayers[i].id) {
-              this.layers[j] = newLayers[i];
+          j2 = 0;
+          while (j2 < jLen) {
+            if (this.layers[j2].id === newLayers[i].id) {
+              this.layers[j2] = newLayers[i];
               break;
             }
-            j += 1;
+            j2 += 1;
           }
         }
       };
@@ -19463,7 +19463,7 @@ function requireLottie() {
             }
           }
         },
-        globalToLocal: function globalToLocal(pt) {
+        globalToLocal: function globalToLocal(pt2) {
           var transforms = [];
           transforms.push(this.finalTransform);
           var flag = true;
@@ -19483,9 +19483,9 @@ function requireLottie() {
           var ptNew;
           for (i = 0; i < len; i += 1) {
             ptNew = transforms[i].mat.applyToPointArray(0, 0, 0);
-            pt = [pt[0] - ptNew[0], pt[1] - ptNew[1], 0];
+            pt2 = [pt2[0] - ptNew[0], pt2[1] - ptNew[1], 0];
           }
-          return pt;
+          return pt2;
         },
         mHelper: new Matrix()
       };
@@ -19505,7 +19505,7 @@ function requireLottie() {
         var properties = this.masksProperties;
         var count = 0;
         var currentMasks = [];
-        var j;
+        var j2;
         var jLen;
         var layerId = createElementID();
         var rect;
@@ -19572,8 +19572,8 @@ function requireLottie() {
             if (properties[i].mode === "i") {
               jLen = currentMasks.length;
               var g = createNS("g");
-              for (j = 0; j < jLen; j += 1) {
-                g.appendChild(currentMasks[j]);
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                g.appendChild(currentMasks[j2]);
               }
               var mask2 = createNS("mask");
               mask2.setAttribute("mask-type", "alpha");
@@ -19823,11 +19823,11 @@ function requireLottie() {
           }
           if (this.data.ty === 0 && !this.data.hd) {
             var cp = createNS("clipPath");
-            var pt = createNS("path");
-            pt.setAttribute("d", "M0,0 L" + this.data.w + ",0 L" + this.data.w + "," + this.data.h + " L0," + this.data.h + "z");
+            var pt2 = createNS("path");
+            pt2.setAttribute("d", "M0,0 L" + this.data.w + ",0 L" + this.data.w + "," + this.data.h + " L0," + this.data.h + "z");
             var clipId = createElementID();
             cp.setAttribute("id", clipId);
-            cp.appendChild(pt);
+            cp.appendChild(pt2);
             this.globalData.defs.appendChild(cp);
             if (this.checkMasks()) {
               var cpGroup = createNS("g");
@@ -20380,10 +20380,10 @@ function requireLottie() {
         gfill.setAttribute("gradientUnits", "userSpaceOnUse");
         var stops = [];
         var stop;
-        var j;
+        var j2;
         var jLen;
         jLen = data2.g.p * 4;
-        for (j = 0; j < jLen; j += 4) {
+        for (j2 = 0; j2 < jLen; j2 += 4) {
           stop = createNS("stop");
           gfill.appendChild(stop);
           stops.push(stop);
@@ -20395,7 +20395,7 @@ function requireLottie() {
       SVGGradientFillStyleData.prototype.setGradientOpacity = function(data2, styleOb) {
         if (this.g._hasOpacity && !this.g._collapsable) {
           var stop;
-          var j;
+          var j2;
           var jLen;
           var mask2 = createNS("mask");
           var maskElement = createNS("path");
@@ -20409,7 +20409,7 @@ function requireLottie() {
           opFill.setAttribute("gradientUnits", "userSpaceOnUse");
           jLen = data2.g.k.k[0].s ? data2.g.k.k[0].s.length : data2.g.k.k.length;
           var stops = this.stops;
-          for (j = data2.g.p * 4; j < jLen; j += 2) {
+          for (j2 = data2.g.p * 4; j2 < jLen; j2 += 2) {
             stop = createNS("stop");
             stop.setAttribute("stop-color", "rgb(255,255,255)");
             opFill.appendChild(stop);
@@ -20512,7 +20512,7 @@ function requireLottie() {
         function renderNoop() {
         }
         function renderPath(styleData, itemData, isFirstFrame) {
-          var j;
+          var j2;
           var jLen;
           var pathStringTransformed;
           var redraw;
@@ -20551,8 +20551,8 @@ function requireLottie() {
             jLen = paths._length;
             if (redraw) {
               pathStringTransformed = "";
-              for (j = 0; j < jLen; j += 1) {
-                pathNodes = paths.shapes[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                pathNodes = paths.shapes[j2];
                 if (pathNodes && pathNodes._length) {
                   pathStringTransformed += buildShapeString(pathNodes, pathNodes._length, pathNodes.c, mat);
                 }
@@ -20715,13 +20715,13 @@ function requireLottie() {
         var i;
         var len = this.shapes.length;
         var shape;
-        var j;
+        var j2;
         var jLen = this.stylesList.length;
         var style;
         var tempShapes = [];
         var areAnimated = false;
-        for (j = 0; j < jLen; j += 1) {
-          style = this.stylesList[j];
+        for (j2 = 0; j2 < jLen; j2 += 1) {
+          style = this.stylesList[j2];
           areAnimated = false;
           tempShapes.length = 0;
           for (i = 0; i < len; i += 1) {
@@ -20839,11 +20839,11 @@ function requireLottie() {
       };
       SVGShapeElement.prototype.setElementStyles = function(elementData) {
         var arr = elementData.styles;
-        var j;
+        var j2;
         var jLen = this.stylesList.length;
-        for (j = 0; j < jLen; j += 1) {
-          if (arr.indexOf(this.stylesList[j]) === -1 && !this.stylesList[j].closed) {
-            arr.push(this.stylesList[j]);
+        for (j2 = 0; j2 < jLen; j2 += 1) {
+          if (arr.indexOf(this.stylesList[j2]) === -1 && !this.stylesList[j2].closed) {
+            arr.push(this.stylesList[j2]);
           }
         }
       };
@@ -20866,7 +20866,7 @@ function requireLottie() {
         var ownTransformers = [].concat(transformers);
         var i;
         var len = arr.length - 1;
-        var j;
+        var j2;
         var jLen;
         var ownStyles = [];
         var ownModifiers = [];
@@ -20897,8 +20897,8 @@ function requireLottie() {
               itemsData[i] = this.createGroupElement(arr[i]);
             } else {
               jLen = itemsData[i].it.length;
-              for (j = 0; j < jLen; j += 1) {
-                itemsData[i].prevViewData[j] = itemsData[i].it[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                itemsData[i].prevViewData[j2] = itemsData[i].it[j2];
               }
             }
             this.searchShapes(arr[i].it, itemsData[i].it, itemsData[i].prevViewData, itemsData[i].gr, level + 1, ownTransformers, render);
@@ -21241,7 +21241,7 @@ function requireLottie() {
         var lineWidths = [];
         var lineWidth = 0;
         var maxLineWidth = 0;
-        var j;
+        var j2;
         var jLen;
         var fontData = fontManager.getFontByName(documentData.f);
         var charData;
@@ -21414,8 +21414,8 @@ function requireLottie() {
         var based;
         var ind;
         var indexes = [];
-        for (j = 0; j < jLen; j += 1) {
-          animatorData = animators[j];
+        for (j2 = 0; j2 < jLen; j2 += 1) {
+          animatorData = animators[j2];
           if (animatorData.a.sc) {
             documentData.strokeColorAnim = true;
           }
@@ -21429,7 +21429,7 @@ function requireLottie() {
           based = animatorData.s.b;
           for (i = 0; i < len; i += 1) {
             letterData = letters[i];
-            letterData.anIndexes[j] = ind;
+            letterData.anIndexes[j2] = ind;
             if (based == 1 && letterData.val !== "" || based == 2 && letterData.val !== "" && letterData.val !== " " || based == 3 && (letterData.n || letterData.val == " " || i == len - 1) || based == 4 && (letterData.n || i == len - 1)) {
               if (animatorData.s.rn === 1) {
                 indexes.push(ind);
@@ -21437,17 +21437,17 @@ function requireLottie() {
               ind += 1;
             }
           }
-          data2.a[j].s.totalChars = ind;
+          data2.a[j2].s.totalChars = ind;
           var currentInd = -1;
           var newInd;
           if (animatorData.s.rn === 1) {
             for (i = 0; i < len; i += 1) {
               letterData = letters[i];
-              if (currentInd != letterData.anIndexes[j]) {
-                currentInd = letterData.anIndexes[j];
+              if (currentInd != letterData.anIndexes[j2]) {
+                currentInd = letterData.anIndexes[j2];
                 newInd = indexes.splice(Math.floor(Math.random() * indexes.length), 1)[0];
               }
-              letterData.anIndexes[j] = newInd;
+              letterData.anIndexes[j2] = newInd;
             }
           }
         }
@@ -21809,7 +21809,7 @@ function requireLottie() {
         var firstLine = true;
         var animatorProps;
         var animatorSelector;
-        var j;
+        var j2;
         var jLen;
         var letterValue;
         jLen = animators.length;
@@ -21851,14 +21851,14 @@ function requireLottie() {
               animatorJustifyOffset = 0;
               isNewLine = true;
             } else {
-              for (j = 0; j < jLen; j += 1) {
-                animatorProps = animators[j].a;
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                animatorProps = animators[j2].a;
                 if (animatorProps.t.propType) {
                   if (isNewLine && documentData.j === 2) {
                     animatorFirstCharOffset += animatorProps.t.v * justifyOffsetMult;
                   }
-                  animatorSelector = animators[j].s;
-                  mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                  animatorSelector = animators[j2].s;
+                  mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                   if (mult.length) {
                     animatorJustifyOffset += animatorProps.t.v * mult[0] * justifyOffsetMult;
                   } else {
@@ -21922,11 +21922,11 @@ function requireLottie() {
               }
               currentLength += alignment[0] * letters[i].an * 5e-3;
               var animatorOffset = 0;
-              for (j = 0; j < jLen; j += 1) {
-                animatorProps = animators[j].a;
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                animatorProps = animators[j2].a;
                 if (animatorProps.p.propType) {
-                  animatorSelector = animators[j].s;
-                  mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                  animatorSelector = animators[j2].s;
+                  mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                   if (mult.length) {
                     animatorOffset += animatorProps.p.v[0] * mult[0];
                   } else {
@@ -21934,8 +21934,8 @@ function requireLottie() {
                   }
                 }
                 if (animatorProps.a.propType) {
-                  animatorSelector = animators[j].s;
-                  mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                  animatorSelector = animators[j2].s;
+                  mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                   if (mult.length) {
                     animatorOffset += animatorProps.a.v[0] * mult[0];
                   } else {
@@ -21988,11 +21988,11 @@ function requireLottie() {
               matrixHelper.translate(-offf, 0, 0);
               matrixHelper.translate(-alignment[0] * letters[i].an * 5e-3, -alignment[1] * yOff * 0.01, 0);
             }
-            for (j = 0; j < jLen; j += 1) {
-              animatorProps = animators[j].a;
+            for (j2 = 0; j2 < jLen; j2 += 1) {
+              animatorProps = animators[j2].a;
               if (animatorProps.t.propType) {
-                animatorSelector = animators[j].s;
-                mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                animatorSelector = animators[j2].s;
+                mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                 if (xPos !== 0 || documentData.j !== 0) {
                   if (this._hasMaskedPath) {
                     if (mult.length) {
@@ -22021,11 +22021,11 @@ function requireLottie() {
             if (documentData.fillColorAnim && documentData.fc) {
               fc = [documentData.fc[0], documentData.fc[1], documentData.fc[2]];
             }
-            for (j = 0; j < jLen; j += 1) {
-              animatorProps = animators[j].a;
+            for (j2 = 0; j2 < jLen; j2 += 1) {
+              animatorProps = animators[j2].a;
               if (animatorProps.a.propType) {
-                animatorSelector = animators[j].s;
-                mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                animatorSelector = animators[j2].s;
+                mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                 if (mult.length) {
                   matrixHelper.translate(-animatorProps.a.v[0] * mult[0], -animatorProps.a.v[1] * mult[1], animatorProps.a.v[2] * mult[2]);
                 } else {
@@ -22033,11 +22033,11 @@ function requireLottie() {
                 }
               }
             }
-            for (j = 0; j < jLen; j += 1) {
-              animatorProps = animators[j].a;
+            for (j2 = 0; j2 < jLen; j2 += 1) {
+              animatorProps = animators[j2].a;
               if (animatorProps.s.propType) {
-                animatorSelector = animators[j].s;
-                mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                animatorSelector = animators[j2].s;
+                mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                 if (mult.length) {
                   matrixHelper.scale(1 + (animatorProps.s.v[0] - 1) * mult[0], 1 + (animatorProps.s.v[1] - 1) * mult[1], 1);
                 } else {
@@ -22045,10 +22045,10 @@ function requireLottie() {
                 }
               }
             }
-            for (j = 0; j < jLen; j += 1) {
-              animatorProps = animators[j].a;
-              animatorSelector = animators[j].s;
-              mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+            for (j2 = 0; j2 < jLen; j2 += 1) {
+              animatorProps = animators[j2].a;
+              animatorSelector = animators[j2].s;
+              mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
               if (animatorProps.sk.propType) {
                 if (mult.length) {
                   matrixHelper.skewFromAxis(-animatorProps.sk.v * mult[0], animatorProps.sa.v * mult[1]);
@@ -22133,11 +22133,11 @@ function requireLottie() {
                 }
               }
             }
-            for (j = 0; j < jLen; j += 1) {
-              animatorProps = animators[j].a;
+            for (j2 = 0; j2 < jLen; j2 += 1) {
+              animatorProps = animators[j2].a;
               if (animatorProps.p.propType) {
-                animatorSelector = animators[j].s;
-                mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
+                animatorSelector = animators[j2].s;
+                mult = animatorSelector.getMult(letters[i].anIndexes[j2], textData.a[j2].s.totalChars);
                 if (this._hasMaskedPath) {
                   if (mult.length) {
                     matrixHelper.translate(0, animatorProps.p.v[1] * mult[0], -animatorProps.p.v[2] * mult[1]);
@@ -22249,13 +22249,13 @@ function requireLottie() {
         this.prepareProperties(num, this.isInRange);
       };
       ITextElement.prototype.createPathShape = function(matrixHelper, shapes) {
-        var j;
+        var j2;
         var jLen = shapes.length;
         var pathNodes;
         var shapeStr = "";
-        for (j = 0; j < jLen; j += 1) {
-          if (shapes[j].ty === "sh") {
-            pathNodes = shapes[j].ks.k;
+        for (j2 = 0; j2 < jLen; j2 += 1) {
+          if (shapes[j2].ty === "sh") {
+            pathNodes = shapes[j2].ks.k;
             shapeStr += buildShapeString(pathNodes, pathNodes.i.length, true, matrixHelper);
           }
         }
@@ -23153,7 +23153,7 @@ function requireLottie() {
         var ctx = this.element.canvasContext;
         var i;
         var len = this.masksProperties.length;
-        var pt;
+        var pt2;
         var pts;
         var data2;
         ctx.beginPath();
@@ -23167,15 +23167,15 @@ function requireLottie() {
               ctx.lineTo(0, 0);
             }
             data2 = this.viewData[i].v;
-            pt = transform2.applyToPointArray(data2.v[0][0], data2.v[0][1], 0);
-            ctx.moveTo(pt[0], pt[1]);
-            var j;
+            pt2 = transform2.applyToPointArray(data2.v[0][0], data2.v[0][1], 0);
+            ctx.moveTo(pt2[0], pt2[1]);
+            var j2;
             var jLen = data2._length;
-            for (j = 1; j < jLen; j += 1) {
-              pts = transform2.applyToTriplePoints(data2.o[j - 1], data2.i[j], data2.v[j]);
+            for (j2 = 1; j2 < jLen; j2 += 1) {
+              pts = transform2.applyToTriplePoints(data2.o[j2 - 1], data2.i[j2], data2.v[j2]);
               ctx.bezierCurveTo(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]);
             }
-            pts = transform2.applyToTriplePoints(data2.o[j - 1], data2.i[0], data2.v[0]);
+            pts = transform2.applyToTriplePoints(data2.o[j2 - 1], data2.i[0], data2.v[0]);
             ctx.bezierCurveTo(pts[0], pts[1], pts[2], pts[3], pts[4], pts[5]);
           }
         }
@@ -23488,7 +23488,7 @@ function requireLottie() {
       CVShapeElement.prototype.searchShapes = function(arr, itemsData, prevViewData, shouldRender, transforms) {
         var i;
         var len = arr.length - 1;
-        var j;
+        var j2;
         var jLen;
         var ownStyles = [];
         var ownModifiers = [];
@@ -23515,8 +23515,8 @@ function requireLottie() {
               itemsData[i] = this.createGroupElement(arr[i]);
             } else {
               jLen = itemsData[i].it.length;
-              for (j = 0; j < jLen; j += 1) {
-                itemsData[i].prevViewData[j] = itemsData[i].it[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                itemsData[i].prevViewData[j2] = itemsData[i].it[j2];
               }
             }
             this.searchShapes(arr[i].it, itemsData[i].it, itemsData[i].prevViewData, shouldRender, ownTransforms);
@@ -23581,7 +23581,7 @@ function requireLottie() {
       CVShapeElement.prototype.drawLayer = function() {
         var i;
         var len = this.stylesList.length;
-        var j;
+        var j2;
         var jLen;
         var k;
         var kLen;
@@ -23612,7 +23612,7 @@ function requireLottie() {
             }
             renderer.ctxTransform(currentStyle.preTransforms.finalTransform.props);
             jLen = elems.length;
-            for (j = 0; j < jLen; j += 1) {
+            for (j2 = 0; j2 < jLen; j2 += 1) {
               if (type === "st" || type === "gs") {
                 ctx.beginPath();
                 if (currentStyle.da) {
@@ -23620,7 +23620,7 @@ function requireLottie() {
                   ctx.lineDashOffset = currentStyle["do"];
                 }
               }
-              nodes = elems[j].trNodes;
+              nodes = elems[j2].trNodes;
               kLen = nodes.length;
               for (k = 0; k < kLen; k += 1) {
                 if (nodes[k].t === "m") {
@@ -23676,12 +23676,12 @@ function requireLottie() {
           var paths = shape.paths;
           var i;
           var len;
-          var j;
+          var j2;
           var jLen = paths._length;
           shapeNodes.length = 0;
           var groupTransformMat = styledShape.transforms.finalTransform;
-          for (j = 0; j < jLen; j += 1) {
-            var pathNodes = paths.shapes[j];
+          for (j2 = 0; j2 < jLen; j2 += 1) {
+            var pathNodes = paths.shapes[j2];
             if (pathNodes && pathNodes.v) {
               len = pathNodes._length;
               for (i = 1; i < len; i += 1) {
@@ -23846,7 +23846,7 @@ function requireLottie() {
         var k;
         var kLen;
         var shapes;
-        var j;
+        var j2;
         var jLen;
         var pathNodes;
         var commands;
@@ -23875,10 +23875,10 @@ function requireLottie() {
           }
           commands = createSizedArray(jLen - 1);
           var commandsCounter = 0;
-          for (j = 0; j < jLen; j += 1) {
-            if (shapes[j].ty === "sh") {
-              kLen = shapes[j].ks.k.i.length;
-              pathNodes = shapes[j].ks.k;
+          for (j2 = 0; j2 < jLen; j2 += 1) {
+            if (shapes[j2].ty === "sh") {
+              kLen = shapes[j2].ks.k.i.length;
+              pathNodes = shapes[j2].ks.k;
               pathArr = [];
               for (k = 1; k < kLen; k += 1) {
                 if (k === 1) {
@@ -23917,7 +23917,7 @@ function requireLottie() {
         }
         var i;
         var len;
-        var j;
+        var j2;
         var jLen;
         var k;
         var kLen;
@@ -23952,8 +23952,8 @@ function requireLottie() {
               commands = this.textSpans[i].elem;
               jLen = commands.length;
               this.globalData.canvasContext.beginPath();
-              for (j = 0; j < jLen; j += 1) {
-                pathArr = commands[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                pathArr = commands[j2];
                 kLen = pathArr.length;
                 this.globalData.canvasContext.moveTo(pathArr[0], pathArr[1]);
                 for (k = 2; k < kLen; k += 6) {
@@ -23985,8 +23985,8 @@ function requireLottie() {
               commands = this.textSpans[i].elem;
               jLen = commands.length;
               this.globalData.canvasContext.beginPath();
-              for (j = 0; j < jLen; j += 1) {
-                pathArr = commands[j];
+              for (j2 = 0; j2 < jLen; j2 += 1) {
+                pathArr = commands[j2];
                 kLen = pathArr.length;
                 this.globalData.canvasContext.moveTo(pathArr[0], pathArr[1]);
                 for (k = 2; k < kLen; k += 6) {
@@ -25489,13 +25489,13 @@ function requireLottie() {
         var len = this.threeDElements.length;
         while (i < len) {
           if (pos <= this.threeDElements[i].endPos) {
-            var j = this.threeDElements[i].startPos;
+            var j2 = this.threeDElements[i].startPos;
             var nextElement;
-            while (j < pos) {
-              if (this.elements[j] && this.elements[j].getBaseElement) {
-                nextElement = this.elements[j].getBaseElement();
+            while (j2 < pos) {
+              if (this.elements[j2] && this.elements[j2].getBaseElement) {
+                nextElement = this.elements[j2].getBaseElement();
               }
-              j += 1;
+              j2 += 1;
             }
             if (nextElement) {
               this.threeDElements[i].container.insertBefore(elem2, nextElement);
@@ -25638,13 +25638,13 @@ function requireLottie() {
         }
       };
       HCompElement.prototype.addTo3dContainer = function(elem2, pos) {
-        var j = 0;
+        var j2 = 0;
         var nextElement;
-        while (j < pos) {
-          if (this.elements[j] && this.elements[j].getBaseElement) {
-            nextElement = this.elements[j].getBaseElement();
+        while (j2 < pos) {
+          if (this.elements[j2] && this.elements[j2].getBaseElement) {
+            nextElement = this.elements[j2].getBaseElement();
           }
-          j += 1;
+          j2 += 1;
         }
         if (nextElement) {
           this.layerElement.insertBefore(elem2, nextElement);
@@ -25777,7 +25777,7 @@ function requireLottie() {
         }
         math["seed" + rngname] = seedrandom;
         function ARC4(key2) {
-          var t, keylen = key2.length, me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
+          var t, keylen = key2.length, me = this, i = 0, j2 = me.i = me.j = 0, s = me.S = [];
           if (!keylen) {
             key2 = [keylen++];
           }
@@ -25785,17 +25785,17 @@ function requireLottie() {
             s[i] = i++;
           }
           for (i = 0; i < width2; i++) {
-            s[i] = s[j = mask2 & j + key2[i % keylen] + (t = s[i])];
-            s[j] = t;
+            s[i] = s[j2 = mask2 & j2 + key2[i % keylen] + (t = s[i])];
+            s[j2] = t;
           }
           me.g = function(count) {
-            var t2, r = 0, i2 = me.i, j2 = me.j, s2 = me.S;
+            var t2, r = 0, i2 = me.i, j3 = me.j, s2 = me.S;
             while (count--) {
               t2 = s2[i2 = mask2 & i2 + 1];
-              r = r * width2 + s2[mask2 & (s2[i2] = s2[j2 = mask2 & j2 + t2]) + (s2[j2] = t2)];
+              r = r * width2 + s2[mask2 & (s2[i2] = s2[j3 = mask2 & j3 + t2]) + (s2[j3] = t2)];
             }
             me.i = i2;
-            me.j = j2;
+            me.j = j3;
             return r;
           };
         }
@@ -25818,9 +25818,9 @@ function requireLottie() {
           return result.length ? result : typ == "string" ? obj : obj + "\0";
         }
         function mixkey(seed, key2) {
-          var stringseed = seed + "", smear, j = 0;
-          while (j < stringseed.length) {
-            key2[mask2 & j] = mask2 & (smear ^= key2[mask2 & j] * 19) + stringseed.charCodeAt(j++);
+          var stringseed = seed + "", smear, j2 = 0;
+          while (j2 < stringseed.length) {
+            key2[mask2 & j2] = mask2 & (smear ^= key2[mask2 & j2] * 19) + stringseed.charCodeAt(j2++);
           }
           return tostring(key2);
         }
@@ -26102,12 +26102,12 @@ function requireLottie() {
           }
           return [h, s, l, val2[3]];
         }
-        function hue2rgb(p, q, t) {
+        function hue2rgb(p, q2, t) {
           if (t < 0) t += 1;
           if (t > 1) t -= 1;
-          if (t < 1 / 6) return p + (q - p) * 6 * t;
-          if (t < 1 / 2) return q;
-          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+          if (t < 1 / 6) return p + (q2 - p) * 6 * t;
+          if (t < 1 / 2) return q2;
+          if (t < 2 / 3) return p + (q2 - p) * (2 / 3 - t) * 6;
           return p;
         }
         function hslToRgb(val2) {
@@ -26122,11 +26122,11 @@ function requireLottie() {
             b = l;
             g = l;
           } else {
-            var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            var p = 2 * l - q;
-            r = hue2rgb(p, q, h + 1 / 3);
-            g = hue2rgb(p, q, h);
-            b = hue2rgb(p, q, h - 1 / 3);
+            var q2 = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            var p = 2 * l - q2;
+            r = hue2rgb(p, q2, h + 1 / 3);
+            g = hue2rgb(p, q2, h);
+            b = hue2rgb(p, q2, h - 1 / 3);
           }
           return [r, g, b, val2[3]];
         }
@@ -26259,16 +26259,16 @@ function requireLottie() {
           var active = !this.data || this.data.hd !== true;
           var wiggle = (function wiggle2(freq, amp) {
             var iWiggle;
-            var j;
+            var j2;
             var lenWiggle = this.pv.length ? this.pv.length : 1;
             var addedAmps = createTypedArray("float32", lenWiggle);
             freq = 5;
             var iterations = Math.floor(time * freq);
             iWiggle = 0;
-            j = 0;
+            j2 = 0;
             while (iWiggle < iterations) {
-              for (j = 0; j < lenWiggle; j += 1) {
-                addedAmps[j] += -amp + amp * 2 * BMMath.random();
+              for (j2 = 0; j2 < lenWiggle; j2 += 1) {
+                addedAmps[j2] += -amp + amp * 2 * BMMath.random();
               }
               iWiggle += 1;
             }
@@ -26276,8 +26276,8 @@ function requireLottie() {
             var perc = periods - Math.floor(periods);
             var arr = createTypedArray("float32", lenWiggle);
             if (lenWiggle > 1) {
-              for (j = 0; j < lenWiggle; j += 1) {
-                arr[j] = this.pv[j] + addedAmps[j] + (-amp + amp * 2 * BMMath.random()) * perc;
+              for (j2 = 0; j2 < lenWiggle; j2 += 1) {
+                arr[j2] = this.pv[j2] + addedAmps[j2] + (-amp + amp * 2 * BMMath.random()) * perc;
               }
               return arr;
             }
@@ -27985,7 +27985,7 @@ function requireLottie() {
           var endFrame = currentTime + width2;
           var sampleFrequency = samples > 1 ? (endFrame - initFrame2) / (samples - 1) : 1;
           var i = 0;
-          var j = 0;
+          var j2 = 0;
           var value2;
           if (this.pv.length) {
             value2 = createTypedArray("float32", this.pv.length);
@@ -27996,8 +27996,8 @@ function requireLottie() {
           while (i < samples) {
             sampleValue = this.getValueAtTime(initFrame2 + i * sampleFrequency);
             if (this.pv.length) {
-              for (j = 0; j < this.pv.length; j += 1) {
-                value2[j] += sampleValue[j];
+              for (j2 = 0; j2 < this.pv.length; j2 += 1) {
+                value2[j2] += sampleValue[j2];
               }
             } else {
               value2 += sampleValue;
@@ -28005,8 +28005,8 @@ function requireLottie() {
             i += 1;
           }
           if (this.pv.length) {
-            for (j = 0; j < this.pv.length; j += 1) {
-              value2[j] /= samples;
+            for (j2 = 0; j2 < this.pv.length; j2 += 1) {
+              value2[j2] /= samples;
             }
           } else {
             value2 /= samples;
@@ -28174,23 +28174,23 @@ function requireLottie() {
             var i = 0;
             var len = lengths.length;
             var accumulatedLength = 0;
-            var pt;
+            var pt2;
             while (i < len) {
               if (accumulatedLength + lengths[i].addedLength > lengthPos) {
                 var initIndex = i;
                 var endIndex = shapePath.c && i === len - 1 ? 0 : i + 1;
                 var segmentPerc = (lengthPos - accumulatedLength) / lengths[i].addedLength;
-                pt = bez.getPointInSegment(shapePath.v[initIndex], shapePath.v[endIndex], shapePath.o[initIndex], shapePath.i[endIndex], segmentPerc, lengths[i]);
+                pt2 = bez.getPointInSegment(shapePath.v[initIndex], shapePath.v[endIndex], shapePath.o[initIndex], shapePath.i[endIndex], segmentPerc, lengths[i]);
                 break;
               } else {
                 accumulatedLength += lengths[i].addedLength;
               }
               i += 1;
             }
-            if (!pt) {
-              pt = shapePath.c ? [shapePath.v[0][0], shapePath.v[0][1]] : [shapePath.v[shapePath._length - 1][0], shapePath.v[shapePath._length - 1][1]];
+            if (!pt2) {
+              pt2 = shapePath.c ? [shapePath.v[0][0], shapePath.v[0][1]] : [shapePath.v[shapePath._length - 1][0], shapePath.v[shapePath._length - 1][1]];
             }
-            return pt;
+            return pt2;
           },
           vectorOnPath: function vectorOnPath(perc, time2, vectorType) {
             if (perc == 1) {
@@ -28421,8 +28421,8 @@ function requireLottie() {
                 var lineLength = l * (e - s);
                 var segment = 1 + this.filterManager.effectElements[4].p.v * 2 * this.filterManager.effectElements[9].p.v * 0.01;
                 var units = Math.floor(lineLength / segment);
-                var j;
-                for (j = 0; j < units; j += 1) {
+                var j2;
+                for (j2 = 0; j2 < units; j2 += 1) {
                   dasharrayValue += "1 " + this.filterManager.effectElements[4].p.v * 2 * this.filterManager.effectElements[9].p.v * 0.01 + " ";
                 }
                 dasharrayValue += "0 " + l * 10 + " 0 0";
@@ -28916,6 +28916,365 @@ function PreviewWindow({
     }
   );
 }
+function GifIcon({ color }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "relative", flexShrink: 0, width: 16, height: 16 }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { clipPath: "url(#clip0_31_88)", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M13.5 3H2.5C2.22386 3 2 3.22386 2 3.5V12.5C2 12.7761 2.22386 13 2.5 13H13.5C13.7761 13 14 12.7761 14 12.5V3.5C14 3.22386 13.7761 3 13.5 3Z", stroke: color, strokeLinecap: "round", strokeLinejoin: "round" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M9.75 7C10.1642 7 10.5 6.66421 10.5 6.25C10.5 5.83579 10.1642 5.5 9.75 5.5C9.33579 5.5 9 5.83579 9 6.25C9 6.66421 9.33579 7 9.75 7Z", fill: color }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M9.20703 10.25L10.8127 8.64621C10.9064 8.55251 11.0335 8.49988 11.1661 8.49988C11.2986 8.49988 11.4258 8.55251 11.5195 8.64621L14.0002 11.1287", stroke: color, strokeLinecap: "round", strokeLinejoin: "round" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M2 10.5432L5.39625 7.14628C5.44269 7.09979 5.49783 7.06291 5.55853 7.03775C5.61923 7.01259 5.68429 6.99963 5.75 6.99963C5.81571 6.99963 5.88077 7.01259 5.94147 7.03775C6.00217 7.06291 6.05731 7.09979 6.10375 7.14628L11.9569 13", stroke: color, strokeLinecap: "round", strokeLinejoin: "round" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("defs", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("clipPath", { id: "clip0_31_88", children: /* @__PURE__ */ jsxRuntimeExports.jsx("rect", { width: "16", height: "16", fill: "white" }) }) })
+  ] }) });
+}
+function VideoIcon({ color }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "relative", flexShrink: 0, width: 16, height: 16 }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { width: "16", height: "16", viewBox: "0 0 16 16", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("g", { clipPath: "url(#clip0_31_96)", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M10 7L7 5V9L10 7Z", stroke: color, strokeLinecap: "round", strokeLinejoin: "round" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M13.5 3H2.5C2.22386 3 2 3.22386 2 3.5V10.5C2 10.7761 2.22386 11 2.5 11H13.5C13.7761 11 14 10.7761 14 10.5V3.5C14 3.22386 13.7761 3 13.5 3Z", stroke: color, strokeLinecap: "round", strokeLinejoin: "round" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M2 13H14", stroke: color, strokeLinecap: "round", strokeLinejoin: "round" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("defs", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("clipPath", { id: "clip0_31_96", children: /* @__PURE__ */ jsxRuntimeExports.jsx("rect", { width: "16", height: "16", fill: "white" }) }) })
+  ] }) });
+}
+function CheckboxIcon({ checked, onClick }) {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      onClick,
+      style: { position: "relative", flexShrink: 0, width: 16, height: 16, cursor: "pointer" },
+      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { style: { position: "absolute", display: "block", width: "100%", height: "100%" }, viewBox: "0 0 16 16", fill: "none", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("rect", { x: "2", y: "2", width: "12", height: "12", rx: "3", stroke: checked ? "#FF6C43" : "#B2A191", strokeWidth: "1.5", fill: checked ? "#FF6C43" : "transparent", style: { transition: "all 0.2s ease" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M5.5 8.5L7 10L10.5 5.5", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round", strokeLinejoin: "round", style: { strokeDasharray: 10, strokeDashoffset: checked ? 0 : 10, transition: "stroke-dashoffset 0.2s ease" } })
+      ] })
+    }
+  );
+}
+function Button({ onClick, children, isActive, bgActive = "#FFFFFF", bgInactive = "transparent" }) {
+  const [hovered, setHovered] = reactExports.useState(false);
+  const [pressed, setPressed] = reactExports.useState(false);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "button",
+    {
+      onClick,
+      onMouseEnter: () => setHovered(true),
+      onMouseLeave: () => {
+        setHovered(false);
+        setPressed(false);
+      },
+      onMouseDown: () => setPressed(true),
+      onMouseUp: () => setPressed(false),
+      style: {
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 4,
+        padding: "8px 16px",
+        borderRadius: 31,
+        width: 84,
+        border: "none",
+        background: isActive ? bgActive : bgInactive,
+        boxShadow: isActive ? "0 1px 3px rgba(0,0,0,0.05)" : "none",
+        transform: pressed ? "scale(0.95)" : hovered ? "scale(1.02)" : "scale(1)",
+        transition: "transform 180ms cubic-bezier(0.4, 0.0, 0.2, 1), background 180ms",
+        outline: "none"
+      },
+      children
+    }
+  );
+}
+function ExportWindowPreview({ onExport }) {
+  const [isExporting, setIsExporting] = reactExports.useState(false);
+  const [progress, setProgress] = reactExports.useState(0);
+  const [mode, setMode2] = reactExports.useState("gif");
+  const [transparent, setTransparent] = reactExports.useState(false);
+  const [fps, setFps] = reactExports.useState("30");
+  const [resolution, setResolution] = reactExports.useState("720p");
+  const [hoveredExport, setHoveredExport] = reactExports.useState(false);
+  const handleExportClick = async () => {
+    if (isExporting || !onExport) return;
+    setIsExporting(true);
+    setProgress(0);
+    try {
+      await onExport({ mode, transparent, fps, resolution }, (prog) => {
+        setProgress(prog);
+      });
+      setProgress(100);
+      setTimeout(() => {
+        setIsExporting(false);
+        setProgress(0);
+      }, 600);
+    } catch (err) {
+      console.error(err);
+      setIsExporting(false);
+      setProgress(0);
+    }
+  };
+  const isGif = mode === "gif";
+  const activeColor = "#FF6C43";
+  const inactiveColor = "#AFA193";
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      onClick: (e) => e.stopPropagation(),
+      style: {
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        background: "rgba(255, 255, 255, 0.95)",
+        position: "relative",
+        borderRadius: 16,
+        paddingTop: 16,
+        paddingBottom: 24,
+        paddingLeft: 80,
+        paddingRight: 80,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 12,
+        boxSizing: "border-box",
+        overflow: "hidden"
+      },
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", alignItems: "center", justifyContent: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontFamily: "Outfit", fontWeight: 500, margin: 0, color: "#AFA193", fontSize: 14, textAlign: "center" }, children: "Export As" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+          background: "#F9F3EF",
+          display: "flex",
+          gap: 2,
+          alignItems: "flex-start",
+          justifyContent: "center",
+          padding: 4,
+          borderRadius: 24
+        }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { onClick: () => setMode2("gif"), isActive: isGif, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(GifIcon, { color: isGif ? activeColor : inactiveColor }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontFamily: "Outfit", fontWeight: 500, fontSize: 12, lineHeight: 1, color: isGif ? activeColor : inactiveColor, transition: "color 180ms" }, children: "GIF" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { onClick: () => setMode2("video"), isActive: !isGif, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(VideoIcon, { color: !isGif ? activeColor : inactiveColor }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontFamily: "Outfit", fontWeight: 500, fontSize: 12, lineHeight: 1, color: !isGif ? activeColor : inactiveColor, transition: "color 180ms" }, children: "Video" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 12, transition: "all 0.3s ease", width: "100%" }, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            background: "rgba(255,255,255,0.59)",
+            display: "flex",
+            gap: 29,
+            alignItems: "center",
+            overflow: "hidden"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 4, width: 70 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontFamily: "Outfit", fontWeight: 500, fontSize: 10, margin: 0, textAlign: "center", color: isGif ? "#AFA193" : "#CAC2BB", transition: "color 0.3s" }, children: "FPS" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                position: "relative",
+                borderRadius: 8,
+                width: "100%",
+                border: "1px solid #F5E7DD",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxSizing: "border-box",
+                padding: "8px 6px"
+              }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "select",
+                {
+                  value: fps,
+                  onChange: (e) => setFps(e.target.value),
+                  style: {
+                    fontFamily: "Outfit",
+                    fontWeight: 600,
+                    fontSize: 12,
+                    margin: 0,
+                    color: "#735A48",
+                    background: "transparent",
+                    border: "none",
+                    outline: "none",
+                    width: "100%",
+                    textAlign: "center",
+                    textAlignLast: "center",
+                    appearance: "none",
+                    cursor: "pointer"
+                  },
+                  children: [15, 24, 30, 50, 60].map((val2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: val2, children: val2 }, val2))
+                }
+              ) })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", gap: 4, width: 90 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontFamily: "Outfit", fontWeight: 500, fontSize: 10, margin: 0, textAlign: "center", color: isGif ? "#AFA193" : "#CAC2BB", transition: "color 0.3s" }, children: "RESOLUTION" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                position: "relative",
+                borderRadius: 8,
+                width: "100%",
+                border: "1px solid #F5E7DD",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxSizing: "border-box",
+                padding: "8px 6px"
+              }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "select",
+                {
+                  value: resolution,
+                  onChange: (e) => setResolution(e.target.value),
+                  style: {
+                    fontFamily: "Outfit",
+                    fontWeight: 600,
+                    fontSize: 12,
+                    margin: 0,
+                    color: "#735A48",
+                    background: "transparent",
+                    border: "none",
+                    outline: "none",
+                    width: "100%",
+                    textAlign: "center",
+                    textAlignLast: "center",
+                    appearance: "none",
+                    cursor: "pointer"
+                  },
+                  children: ["360p", "540p", "720p", "1080p", "1440p", "2160p"].map((val2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: val2, children: val2 }, val2))
+                }
+              ) })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+            display: "flex",
+            gap: 6,
+            alignItems: "center",
+            justifyContent: "center",
+            opacity: 1,
+            height: 16,
+            pointerEvents: "auto",
+            transition: "all 250ms ease-in-out",
+            overflow: "hidden",
+            width: "100%"
+          }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CheckboxIcon, { checked: transparent, onClick: () => setTransparent(!transparent) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontFamily: "Outfit", fontWeight: 500, fontSize: 10, margin: 0, color: "#AFA193" }, children: "Transparent background" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { display: "flex", flexDirection: "column", alignItems: "center" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: !isExporting ? handleExportClick : void 0,
+            onMouseEnter: () => setHoveredExport(true),
+            onMouseLeave: () => setHoveredExport(false),
+            style: {
+              background: "#FF6C43",
+              cursor: "pointer",
+              display: "flex",
+              gap: 6,
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "8px 24px",
+              borderRadius: 31,
+              border: "none",
+              outline: "none",
+              marginTop: 12,
+              transform: hoveredExport ? "scale(1.025) translateY(-2px)" : "scale(1)",
+              transition: "all 250ms cubic-bezier(0.4, 0.0, 0.2, 1)",
+              boxSizing: "border-box",
+              height: 38
+            },
+            children: !isExporting ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { display: "flex", alignItems: "center", gap: 6 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { position: "relative", width: 16, height: 16, flexShrink: 0 }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", opacity: isGif ? 1 : 0, transition: "opacity 250ms ease-in-out", transform: isGif ? "scale(1)" : "scale(0.8)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(GifIcon, { color: "white" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { position: "absolute", opacity: !isGif ? 1 : 0, transition: "opacity 250ms ease-in-out", transform: !isGif ? "scale(1)" : "scale(0.8)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(VideoIcon, { color: "white" }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
+                position: "relative",
+                height: 14,
+                width: isGif ? 75 : 88,
+                transition: "width 250ms ease-in-out",
+                flexShrink: 0
+              }, children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
+                  position: "absolute",
+                  top: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  fontFamily: "Outfit",
+                  fontWeight: 800,
+                  fontSize: 14,
+                  margin: 0,
+                  color: "white",
+                  lineHeight: "14px",
+                  whiteSpace: "nowrap",
+                  opacity: isGif ? 1 : 0,
+                  pointerEvents: "none",
+                  transition: "opacity 250ms ease-in-out"
+                }, children: "Export GIF" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: {
+                  position: "absolute",
+                  top: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  fontFamily: "Outfit",
+                  fontWeight: 800,
+                  fontSize: 14,
+                  margin: 0,
+                  color: "white",
+                  lineHeight: "14px",
+                  whiteSpace: "nowrap",
+                  opacity: !isGif ? 1 : 0,
+                  pointerEvents: "none",
+                  transition: "opacity 250ms ease-in-out"
+                }, children: "Export Video" })
+              ] })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: { width: 104, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                width: "100%",
+                height: 4,
+                background: "rgba(255,255,255,0.3)",
+                borderRadius: 2,
+                overflow: "hidden"
+              }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+                height: "100%",
+                background: "white",
+                width: `${progress}%`,
+                transition: "width 100ms linear"
+              } }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { style: { fontFamily: "Outfit", fontWeight: 700, fontSize: 10, margin: 0, color: "white", alignSelf: "center", lineHeight: 1 }, children: [
+                progress,
+                "%"
+              ] })
+            ] })
+          }
+        ) })
+      ]
+    }
+  );
+}
+reactExports.forwardRef(({ animationData, className, loop = true, autoplay = true, style }, ref) => {
+  const containerRef = reactExports.useRef(null);
+  const animRef = reactExports.useRef(null);
+  reactExports.useImperativeHandle(ref, () => ({
+    getLottie: () => animRef.current
+  }));
+  reactExports.useEffect(() => {
+    if (!containerRef.current || !animationData) return;
+    animRef.current = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: "svg",
+      loop,
+      autoplay,
+      // Pass a clone to lottie since it mutates the object heavily
+      animationData: JSON.parse(JSON.stringify(animationData))
+    });
+    return () => {
+      if (animRef.current) {
+        animRef.current.destroy();
+      }
+    };
+  }, [animationData]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      ref: containerRef,
+      className: `w-full h-full flex items-center justify-center ${className || ""}`,
+      style
+    }
+  );
+});
 var md5$1 = { exports: {} };
 var crypt = { exports: {} };
 var hasRequiredCrypt;
@@ -28977,9 +29336,9 @@ function requireCrypt() {
       bytesToBase64: function(bytes) {
         for (var base64 = [], i = 0; i < bytes.length; i += 3) {
           var triplet = bytes[i] << 16 | bytes[i + 1] << 8 | bytes[i + 2];
-          for (var j = 0; j < 4; j++)
-            if (i * 8 + j * 6 <= bytes.length * 8)
-              base64.push(base64map.charAt(triplet >>> 6 * (3 - j) & 63));
+          for (var j2 = 0; j2 < 4; j2++)
+            if (i * 8 + j2 * 6 <= bytes.length * 8)
+              base64.push(base64map.charAt(triplet >>> 6 * (3 - j2) & 63));
             else
               base64.push("=");
         }
@@ -29175,7 +29534,7 @@ function requireMd5() {
 }
 var md5Exports = requireMd5();
 const md5 = /* @__PURE__ */ getDefaultExportFromCjs(md5Exports);
-const formatBytes$1 = (bytes, decimals = 2) => {
+const formatBytes = (bytes, decimals = 2) => {
   if (!+bytes) return "0 Bytes";
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
@@ -29184,6 +29543,7 @@ const formatBytes$1 = (bytes, decimals = 2) => {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 };
 const WATERMARK_SIGNATURE = /* @__PURE__ */ new Set([
+  // Lottielab Watermark Signatures
   "c5bc8fdda61830d96be4874ab959f66a",
   "5a43f5f674f0bad3c21f9e5c95fee0b0",
   "14fa378de772d8a7b1686bbd0b6edf37",
@@ -29205,7 +29565,27 @@ const WATERMARK_SIGNATURE = /* @__PURE__ */ new Set([
   "0ed3d5f0427e7331dd451d7477d219a6",
   "e006ff964315836518cae396a13a9b12",
   "679f6411be05919ab16aa1ef433d5594",
-  "d33d94e1ccecbfb105f6055bbda8b581"
+  "d33d94e1ccecbfb105f6055bbda8b581",
+  // Jitter Watermark Signatures
+  "fe99ab48db28cfff54a9c9bb4f31e119",
+  "bc9aaf2ce4e62b085d41bcd96bf7353c",
+  "aba0a5d781e1879ad8daa97ff0d60bc9",
+  "2d1d34ca0364381b0ebb0fdf4ea9a403",
+  "95e496ea09c2c4be5b24cc0ecb72a950",
+  "d455cd4482bf6b143039b55c2ae58972",
+  "781322cb4331a1ec1fe3dad12645b113",
+  "49a77f5b24cb6e52ad79e69c7b241d70",
+  "cb7fc2511dc4c4657cfdbf52f4deb6c6",
+  "1594a4f65244877499c37967ae2319a4",
+  "f9398ecaf6ebb435125986cb3269082e",
+  "6cd0c95221fad00bab7792d58f44f329",
+  "c0c518170a18ab09ed8e141ce1dc22ee",
+  "2c0bb96497453575b6278523eb7b4d4d",
+  "eeb7f20d0dc7b3f8c9bd1eab6345dfcb",
+  "e1b57617f6b58f5d882a3682f20341cc",
+  "caffe3b243965623a64a00ed4724a1e8",
+  "456889588e05897c422df564cf17cdf5",
+  "8a9e5a970aefbd9bee36ab53b27e381a"
 ]);
 function isWatermarkLayer(layer) {
   const paths = [];
@@ -29238,6 +29618,9 @@ const processLottie = (originalJson) => {
       if (Array.isArray(node)) {
         for (let i = node.length - 1; i >= 0; i--) {
           if (isWatermarkLayer(node[i])) {
+            if (node[i].id) {
+              removedAssetIds.add(node[i].id);
+            }
             result.watermarksRemoved++;
             result.pathsRemoved++;
             node.splice(i, 1);
@@ -29250,6 +29633,9 @@ const processLottie = (originalJson) => {
           if (Array.isArray(node[arrKey])) {
             for (let i = node[arrKey].length - 1; i >= 0; i--) {
               if (isWatermarkLayer(node[arrKey][i])) {
+                if (node[arrKey][i].id) {
+                  removedAssetIds.add(node[arrKey][i].id);
+                }
                 result.watermarksRemoved++;
                 result.pathsRemoved++;
                 node[arrKey].splice(i, 1);
@@ -29275,7 +29661,41 @@ const processLottie = (originalJson) => {
       data: null,
       pathsRemoved: 0
     };
+    const removedAssetIds = /* @__PURE__ */ new Set();
     stripWatermarks(json);
+    if (removedAssetIds.size > 0) {
+      let changed = true;
+      while (changed) {
+        changed = false;
+        if (Array.isArray(json.assets)) {
+          for (let i = json.assets.length - 1; i >= 0; i--) {
+            const asset = json.assets[i];
+            const referencesRemoved = asset.layers?.some((l) => l.refId && removedAssetIds.has(l.refId));
+            if (referencesRemoved) {
+              removedAssetIds.add(asset.id);
+              json.assets.splice(i, 1);
+              changed = true;
+            }
+          }
+        }
+        const checkLayers = (layerArr) => {
+          if (!Array.isArray(layerArr)) return;
+          for (let i = layerArr.length - 1; i >= 0; i--) {
+            const layer = layerArr[i];
+            if (layer.refId && removedAssetIds.has(layer.refId)) {
+              layerArr.splice(i, 1);
+              changed = true;
+            } else if (layer.layers) {
+              checkLayers(layer.layers);
+            }
+          }
+        };
+        checkLayers(json.layers);
+        if (Array.isArray(json.assets)) {
+          json.assets.forEach((a) => checkLayers(a.layers));
+        }
+      }
+    }
     const processNode = (node) => {
       if (!node) return node;
       if (Array.isArray(node)) {
@@ -29297,11 +29717,558 @@ const processLottie = (originalJson) => {
     return { success: false, error: err.message };
   }
 };
-const FOLDER_ICON = new URL("/Lottieny/folder-icon.png", import.meta.url).href;
-const LOGO_MARK = new URL("/Lottieny/logo-mark.png", import.meta.url).href;
+var X = { trailer: 59 };
+function F(t = 256) {
+  let e = 0, s = new Uint8Array(t);
+  return { get buffer() {
+    return s.buffer;
+  }, reset() {
+    e = 0;
+  }, bytesView() {
+    return s.subarray(0, e);
+  }, bytes() {
+    return s.slice(0, e);
+  }, writeByte(r) {
+    n(e + 1), s[e] = r, e++;
+  }, writeBytes(r, o = 0, i = r.length) {
+    n(e + i);
+    for (let c = 0; c < i; c++) s[e++] = r[c + o];
+  }, writeBytesView(r, o = 0, i = r.byteLength) {
+    n(e + i), s.set(r.subarray(o, o + i), e), e += i;
+  } };
+  function n(r) {
+    var o = s.length;
+    if (o >= r) return;
+    var i = 1024 * 1024;
+    r = Math.max(r, o * (o < i ? 2 : 1.125) >>> 0), o != 0 && (r = Math.max(r, 256));
+    let c = s;
+    s = new Uint8Array(r), e > 0 && s.set(c.subarray(0, e), 0);
+  }
+}
+var O = 12, J = 5003, lt = [0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535];
+function at(t, e, s, n, r = F(512), o = new Uint8Array(256), i = new Int32Array(J), c = new Int32Array(J)) {
+  let x = i.length, a = Math.max(2, n);
+  o.fill(0), c.fill(0), i.fill(-1);
+  let l = 0, f = 0, g = a + 1, h = g, b = false, w = h, _ = (1 << w) - 1, u = 1 << g - 1, k = u + 1, B = u + 2, p = 0, A = s[0], z = 0;
+  for (let y = x; y < 65536; y *= 2) ++z;
+  z = 8 - z, r.writeByte(a), I(u);
+  let d = s.length;
+  for (let y = 1; y < d; y++) {
+    t: {
+      let m = s[y], v = (m << O) + A, M = m << z ^ A;
+      if (i[M] === v) {
+        A = c[M];
+        break t;
+      }
+      let V = M === 0 ? 1 : x - M;
+      for (; i[M] >= 0; ) if (M -= V, M < 0 && (M += x), i[M] === v) {
+        A = c[M];
+        break t;
+      }
+      I(A), A = m, B < 1 << O ? (c[M] = B++, i[M] = v) : (i.fill(-1), B = u + 2, b = true, I(u));
+    }
+  }
+  return I(A), I(k), r.writeByte(0), r.bytesView();
+  function I(y) {
+    for (l &= lt[f], f > 0 ? l |= y << f : l = y, f += w; f >= 8; ) o[p++] = l & 255, p >= 254 && (r.writeByte(p), r.writeBytesView(o, 0, p), p = 0), l >>= 8, f -= 8;
+    if ((B > _ || b) && (b ? (w = h, _ = (1 << w) - 1, b = false) : (++w, _ = w === O ? 1 << w : (1 << w) - 1)), y == k) {
+      for (; f > 0; ) o[p++] = l & 255, p >= 254 && (r.writeByte(p), r.writeBytesView(o, 0, p), p = 0), l >>= 8, f -= 8;
+      p > 0 && (r.writeByte(p), r.writeBytesView(o, 0, p), p = 0);
+    }
+  }
+}
+var $ = at;
+function D(t, e, s) {
+  return t << 8 & 63488 | e << 2 & 992 | s >> 3;
+}
+function G(t, e, s, n) {
+  return t >> 4 | e & 240 | (s & 240) << 4 | (n & 240) << 8;
+}
+function j(t, e, s) {
+  return t >> 4 << 8 | e & 240 | s >> 4;
+}
+function R(t, e, s) {
+  return t < e ? e : t > s ? s : t;
+}
+function T(t) {
+  return t * t;
+}
+function tt(t, e, s) {
+  var n = 0, r = 1e100;
+  let o = t[e], i = o.cnt;
+  o.ac;
+  let x = o.rc, a = o.gc, l = o.bc;
+  for (var f = o.fw; f != 0; f = t[f].fw) {
+    let h = t[f], b = h.cnt, w = i * b / (i + b);
+    if (!(w >= r)) {
+      var g = 0;
+      g += w * T(h.rc - x), !(g >= r) && (g += w * T(h.gc - a), !(g >= r) && (g += w * T(h.bc - l), !(g >= r) && (r = g, n = f)));
+    }
+  }
+  o.err = r, o.nn = n;
+}
+function Q() {
+  return { ac: 0, rc: 0, gc: 0, bc: 0, cnt: 0, nn: 0, fw: 0, bk: 0, tm: 0, mtm: 0, err: 0 };
+}
+function ut(t, e) {
+  let s = e === "rgb444" ? 4096 : 65536, n = new Array(s), r = t.length;
+  if (e === "rgba4444") for (let o = 0; o < r; ++o) {
+    let i = t[o], c = i >> 24 & 255, x = i >> 16 & 255, a = i >> 8 & 255, l = i & 255, f = G(l, a, x, c), g = f in n ? n[f] : n[f] = Q();
+    g.rc += l, g.gc += a, g.bc += x, g.ac += c, g.cnt++;
+  }
+  else if (e === "rgb444") for (let o = 0; o < r; ++o) {
+    let i = t[o], c = i >> 16 & 255, x = i >> 8 & 255, a = i & 255, l = j(a, x, c), f = l in n ? n[l] : n[l] = Q();
+    f.rc += a, f.gc += x, f.bc += c, f.cnt++;
+  }
+  else for (let o = 0; o < r; ++o) {
+    let i = t[o], c = i >> 16 & 255, x = i >> 8 & 255, a = i & 255, l = D(a, x, c), f = l in n ? n[l] : n[l] = Q();
+    f.rc += a, f.gc += x, f.bc += c, f.cnt++;
+  }
+  return n;
+}
+function H(t, e, s = {}) {
+  let { format: n = "rgb565", clearAlpha: r = true, clearAlphaColor: o = 0, clearAlphaThreshold: i = 0, oneBitAlpha: c = false } = s;
+  if (!t || !t.buffer) throw new Error("quantize() expected RGBA Uint8Array data");
+  if (!(t instanceof Uint8Array) && !(t instanceof Uint8ClampedArray)) throw new Error("quantize() expected RGBA Uint8Array data");
+  let x = new Uint32Array(t.buffer), a = s.useSqrt !== false, l = n === "rgba4444", f = ut(x, n), g = f.length, h = g - 1, b = new Uint32Array(g + 1);
+  for (var w = 0, u = 0; u < g; ++u) {
+    let C = f[u];
+    if (C != null) {
+      var _ = 1 / C.cnt;
+      l && (C.ac *= _), C.rc *= _, C.gc *= _, C.bc *= _, f[w++] = C;
+    }
+  }
+  T(e) / w < 0.022 && (a = false);
+  for (var u = 0; u < w - 1; ++u) f[u].fw = u + 1, f[u + 1].bk = u, a && (f[u].cnt = Math.sqrt(f[u].cnt));
+  a && (f[u].cnt = Math.sqrt(f[u].cnt));
+  var k, B, p;
+  for (u = 0; u < w; ++u) {
+    tt(f, u);
+    var A = f[u].err;
+    for (B = ++b[0]; B > 1 && (p = B >> 1, !(f[k = b[p]].err <= A)); B = p) b[B] = k;
+    b[B] = u;
+  }
+  var z = w - e;
+  for (u = 0; u < z; ) {
+    for (var d; ; ) {
+      var I = b[1];
+      if (d = f[I], d.tm >= d.mtm && f[d.nn].mtm <= d.tm) break;
+      d.mtm == h ? I = b[1] = b[b[0]--] : (tt(f, I), d.tm = u);
+      var A = f[I].err;
+      for (B = 1; (p = B + B) <= b[0] && (p < b[0] && f[b[p]].err > f[b[p + 1]].err && p++, !(A <= f[k = b[p]].err)); B = p) b[B] = k;
+      b[B] = I;
+    }
+    var y = f[d.nn], m = d.cnt, v = y.cnt, _ = 1 / (m + v);
+    l && (d.ac = _ * (m * d.ac + v * y.ac)), d.rc = _ * (m * d.rc + v * y.rc), d.gc = _ * (m * d.gc + v * y.gc), d.bc = _ * (m * d.bc + v * y.bc), d.cnt += y.cnt, d.mtm = ++u, f[y.bk].fw = y.fw, f[y.fw].bk = y.bk, y.mtm = h;
+  }
+  let M = [];
+  var V = 0;
+  for (u = 0; ; ++V) {
+    let L = R(Math.round(f[u].rc), 0, 255), C = R(Math.round(f[u].gc), 0, 255), Y = R(Math.round(f[u].bc), 0, 255), E = 255;
+    if (l) {
+      if (E = R(Math.round(f[u].ac), 0, 255), c) {
+        let st = typeof c == "number" ? c : 127;
+        E = E <= st ? 0 : 255;
+      }
+      r && E <= i && (L = C = Y = o, E = 0);
+    }
+    let K = l ? [L, C, Y, E] : [L, C, Y];
+    if (xt(M, K) || M.push(K), (u = f[u].fw) == 0) break;
+  }
+  return M;
+}
+function xt(t, e) {
+  for (let s = 0; s < t.length; s++) {
+    let n = t[s], r = n[0] === e[0] && n[1] === e[1] && n[2] === e[2], o = n.length >= 4 && e.length >= 4 ? n[3] === e[3] : true;
+    if (r && o) return true;
+  }
+  return false;
+}
+function nt(t, e, s = "rgb565") {
+  if (!t || !t.buffer) throw new Error("quantize() expected RGBA Uint8Array data");
+  if (!(t instanceof Uint8Array) && !(t instanceof Uint8ClampedArray)) throw new Error("quantize() expected RGBA Uint8Array data");
+  if (e.length > 256) throw new Error("applyPalette() only works with 256 colors or less");
+  let n = new Uint32Array(t.buffer), r = n.length, o = s === "rgb444" ? 4096 : 65536, i = new Uint8Array(r), c = new Array(o);
+  if (s === "rgba4444") for (let a = 0; a < r; a++) {
+    let l = n[a], f = l >> 24 & 255, g = l >> 16 & 255, h = l >> 8 & 255, b = l & 255, w = G(b, h, g, f), _ = w in c ? c[w] : c[w] = gt(b, h, g, f, e);
+    i[a] = _;
+  }
+  else {
+    let a = s === "rgb444" ? j : D;
+    for (let l = 0; l < r; l++) {
+      let f = n[l], g = f >> 16 & 255, h = f >> 8 & 255, b = f & 255, w = a(b, h, g), _ = w in c ? c[w] : c[w] = bt(b, h, g, e);
+      i[l] = _;
+    }
+  }
+  return i;
+}
+function gt(t, e, s, n, r) {
+  let o = 0, i = 1e100;
+  for (let c = 0; c < r.length; c++) {
+    let x = r[c], a = x[3], l = q(a - n);
+    if (l > i) continue;
+    let f = x[0];
+    if (l += q(f - t), l > i) continue;
+    let g = x[1];
+    if (l += q(g - e), l > i) continue;
+    let h = x[2];
+    l += q(h - s), !(l > i) && (i = l, o = c);
+  }
+  return o;
+}
+function bt(t, e, s, n) {
+  let r = 0, o = 1e100;
+  for (let i = 0; i < n.length; i++) {
+    let c = n[i], x = c[0], a = q(x - t);
+    if (a > o) continue;
+    let l = c[1];
+    if (a += q(l - e), a > o) continue;
+    let f = c[2];
+    a += q(f - s), !(a > o) && (o = a, r = i);
+  }
+  return r;
+}
+function q(t) {
+  return t * t;
+}
+function ct(t = {}) {
+  let { initialCapacity: e = 4096, auto: s = true } = t, n = F(e), r = 5003, o = new Uint8Array(256), i = new Int32Array(r), c = new Int32Array(r), x = false;
+  return { reset() {
+    n.reset(), x = false;
+  }, finish() {
+    n.writeByte(X.trailer);
+  }, bytes() {
+    return n.bytes();
+  }, bytesView() {
+    return n.bytesView();
+  }, get buffer() {
+    return n.buffer;
+  }, get stream() {
+    return n;
+  }, writeHeader: a, writeFrame(l, f, g, h = {}) {
+    let { transparent: b = false, transparentIndex: w = 0, delay: _ = 0, palette: u = null, repeat: k = 0, colorDepth: B = 8, dispose: p = -1 } = h, A = false;
+    if (s ? x || (A = true, a(), x = true) : A = Boolean(h.first), f = Math.max(0, Math.floor(f)), g = Math.max(0, Math.floor(g)), A) {
+      if (!u) throw new Error("First frame must include a { palette } option");
+      pt(n, f, g, u, B), it(n, u), k >= 0 && dt(n, k);
+    }
+    let z = Math.round(_ / 10);
+    wt(n, p, z, b, w);
+    let d = Boolean(u) && !A;
+    ht(n, f, g, d ? u : null), d && it(n, u), yt(n, l, f, g, B, o, i, c);
+  } };
+  function a() {
+    ft(n, "GIF89a");
+  }
+}
+function wt(t, e, s, n, r) {
+  t.writeByte(33), t.writeByte(249), t.writeByte(4), r < 0 && (r = 0, n = false);
+  var o, i;
+  n ? (o = 1, i = 2) : (o = 0, i = 0), e >= 0 && (i = e & 7), i <<= 2;
+  let c = 0;
+  t.writeByte(0 | i | c | o), S(t, s), t.writeByte(r || 0), t.writeByte(0);
+}
+function pt(t, e, s, n, r = 8) {
+  let o = 1, i = 0, c = Z(n.length) - 1, x = o << 7 | r - 1 << 4 | i << 3 | c, a = 0, l = 0;
+  S(t, e), S(t, s), t.writeBytes([x, a, l]);
+}
+function dt(t, e) {
+  t.writeByte(33), t.writeByte(255), t.writeByte(11), ft(t, "NETSCAPE2.0"), t.writeByte(3), t.writeByte(1), S(t, e), t.writeByte(0);
+}
+function it(t, e) {
+  let s = 1 << Z(e.length);
+  for (let n = 0; n < s; n++) {
+    let r = [0, 0, 0];
+    n < e.length && (r = e[n]), t.writeByte(r[0]), t.writeByte(r[1]), t.writeByte(r[2]);
+  }
+}
+function ht(t, e, s, n) {
+  if (t.writeByte(44), S(t, 0), S(t, 0), S(t, e), S(t, s), n) {
+    let r = 0, o = 0, i = Z(n.length) - 1;
+    t.writeByte(128 | r | o | 0 | i);
+  } else t.writeByte(0);
+}
+function yt(t, e, s, n, r = 8, o, i, c) {
+  $(s, n, e, r, t, o, i, c);
+}
+function S(t, e) {
+  t.writeByte(e & 255), t.writeByte(e >> 8 & 255);
+}
+function ft(t, e) {
+  for (var s = 0; s < e.length; s++) t.writeByte(e.charCodeAt(s));
+}
+function Z(t) {
+  return Math.max(Math.ceil(Math.log2(t)), 1);
+}
+const RESOLUTION_MAP = {
+  "360p": 360,
+  "540p": 540,
+  "720p": 720,
+  "1080p": 1080,
+  "1440p": 1440,
+  "2160p": 2160
+};
+function hasTransparentBackground(animationData) {
+  if (!animationData?.layers) return true;
+  return !animationData.layers.some((l) => l.ty === 1);
+}
+function getDimensions(animationData, resKey) {
+  const h = RESOLUTION_MAP[resKey] ?? 720;
+  const ratio = (animationData.w || 512) / (animationData.h || 512);
+  let w = Math.round(h * ratio);
+  return { width: w % 2 ? w + 1 : w, height: h % 2 ? h + 1 : h };
+}
+function rasterizeFrames(animationData, { width: width2, height: height2, fps, onProgress, onFrame }) {
+  return new Promise((resolve, reject) => {
+    const wPhysical = width2;
+    const hPhysical = height2;
+    const host = document.createElement("div");
+    host.style.cssText = `position:fixed;top:0;left:0;width:${width2}px;height:${height2}px;visibility:hidden;pointer-events:none;`;
+    document.body.appendChild(host);
+    const anim = lottie.loadAnimation({
+      container: host,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: JSON.parse(JSON.stringify(animationData)),
+      rendererSettings: { preserveAspectRatio: "xMidYMid meet" }
+    });
+    function cleanup() {
+      try {
+        anim.destroy();
+      } catch (_) {
+      }
+      try {
+        host.remove();
+      } catch (_) {
+      }
+    }
+    let renderStarted = false;
+    function doRender() {
+      if (renderStarted) return;
+      renderStarted = true;
+      const totalLottieFrames = anim.totalFrames;
+      const durationSecs = totalLottieFrames / (animationData.fr || 30);
+      const totalOut = Math.max(1, Math.ceil(durationSecs * fps));
+      const svgEl = host.querySelector("svg");
+      if (!svgEl) {
+        cleanup();
+        reject(new Error("SVG element not found — check the animation file."));
+        return;
+      }
+      svgEl.setAttribute("width", String(wPhysical));
+      svgEl.setAttribute("height", String(hPhysical));
+      const fc = document.createElement("canvas");
+      fc.width = wPhysical;
+      fc.height = hPhysical;
+      const fCtx = fc.getContext("2d");
+      function captureNextFrame(i) {
+        if (i >= totalOut) {
+          cleanup();
+          resolve();
+          return;
+        }
+        anim.goToAndStop(i / totalOut * totalLottieFrames, true);
+        requestAnimationFrame(() => {
+          const svgString = new XMLSerializer().serializeToString(svgEl);
+          const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+          const img = new Image();
+          img.src = url;
+          img.decode().then(() => {
+            fCtx.clearRect(0, 0, wPhysical, hPhysical);
+            fCtx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+            return Promise.resolve(onFrame ? onFrame(fc, i) : null);
+          }).then(() => {
+            if (onProgress) onProgress(Math.round((i + 1) / totalOut * 100));
+            const delay = wPhysical >= 3840 ? 32 : wPhysical >= 1920 ? 16 : 0;
+            setTimeout(() => captureNextFrame(i + 1), delay);
+          }).catch((err) => {
+            URL.revokeObjectURL(url);
+            cleanup();
+            reject(err instanceof Error ? err : new Error(`Frame ${i} failed: ${err}`));
+          });
+        });
+      }
+      captureNextFrame(0);
+    }
+    anim.addEventListener("DOMLoaded", doRender);
+    const tOut = setTimeout(() => {
+      if (host.querySelector("svg")) {
+        doRender();
+      } else {
+        cleanup();
+        reject(new Error("Lottie DOMLoaded timeout — animation may be corrupt."));
+      }
+    }, 5e3);
+    anim.addEventListener("DOMLoaded", () => clearTimeout(tOut));
+  });
+}
+async function exportAsGif(animationData, { fps = 30, resolution = "720p", onProgress } = {}) {
+  const { width: width2, height: height2 } = getDimensions(animationData, resolution);
+  const transparent = hasTransparentBackground(animationData);
+  const wPhysical = width2;
+  const hPhysical = height2;
+  const encoder = ct();
+  const delay = Math.round(1e3 / fps);
+  const tmpCanvas = document.createElement("canvas");
+  tmpCanvas.width = wPhysical;
+  tmpCanvas.height = hPhysical;
+  const tmpCtx = tmpCanvas.getContext("2d");
+  await rasterizeFrames(animationData, {
+    width: width2,
+    height: height2,
+    fps,
+    onProgress: (p) => onProgress?.(3 + Math.round(p * 0.95), "Rendering & Encoding GIF…"),
+    onFrame: (frameCanvas) => {
+      tmpCtx.clearRect(0, 0, wPhysical, hPhysical);
+      if (!transparent) {
+        tmpCtx.fillStyle = "#FFFFFF";
+        tmpCtx.fillRect(0, 0, wPhysical, hPhysical);
+      }
+      tmpCtx.drawImage(frameCanvas, 0, 0);
+      const { data: data2 } = tmpCtx.getImageData(0, 0, wPhysical, hPhysical);
+      const fmt = transparent ? "rgba4444" : "rgb565";
+      const palette = H(data2, 256, { format: fmt });
+      const indexed = nt(data2, palette, fmt);
+      encoder.writeFrame(indexed, wPhysical, hPhysical, {
+        palette,
+        delay,
+        transparent,
+        dispose: transparent ? 2 : 0
+      });
+    }
+  });
+  encoder.finish();
+  onProgress?.(100, "Done!");
+  return new Blob([encoder.bytes()], { type: "image/gif" });
+}
+async function exportAsVideo(animationData, { fps = 30, resolution = "720p", transparent = false, onProgress } = {}) {
+  const { width: width2, height: height2 } = getDimensions(animationData, resolution);
+  const wPhysical = width2;
+  const hPhysical = height2;
+  const frameBlobUrls = [];
+  await rasterizeFrames(animationData, {
+    width: width2,
+    height: height2,
+    fps,
+    onProgress: (p) => onProgress?.(3 + Math.round(p * 0.6), "Rendering frames…"),
+    onFrame: (frameCanvas) => new Promise((res) => {
+      frameCanvas.toBlob((blob) => {
+        frameBlobUrls.push(URL.createObjectURL(blob));
+        res();
+      }, "image/png");
+    })
+  });
+  const label = transparent ? "Transparent Video" : "MP4 Video";
+  onProgress?.(63, `Encoding ${label}…`);
+  const playback = document.createElement("canvas");
+  playback.width = wPhysical;
+  playback.height = hPhysical;
+  const pCtx = playback.getContext("2d");
+  const stream = playback.captureStream(fps);
+  let mimeType = "video/webm;codecs=vp9";
+  if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = "video/webm;codecs=vp8";
+  if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = "video/webm";
+  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: 1e8 });
+  const chunks = [];
+  recorder.ondataavailable = (e) => {
+    if (e.data.size > 0) chunks.push(e.data);
+  };
+  const stopped = new Promise((r) => {
+    recorder.onstop = r;
+  });
+  const frameDurationMs = 1e3 / fps;
+  const exactDurationMs = frameBlobUrls.length / fps * 1e3;
+  recorder.start(100);
+  const recordingStart = performance.now();
+  for (let i = 0; i < frameBlobUrls.length; i++) {
+    const img = new Image();
+    img.src = frameBlobUrls[i];
+    await img.decode();
+    pCtx.clearRect(0, 0, wPhysical, hPhysical);
+    if (!transparent) {
+      pCtx.fillStyle = "#FFFFFF";
+      pCtx.fillRect(0, 0, wPhysical, hPhysical);
+    }
+    pCtx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(frameBlobUrls[i]);
+    const targetMs = (i + 1) * frameDurationMs;
+    const nowOffset = performance.now() - recordingStart;
+    const sleepMs = targetMs - nowOffset;
+    if (sleepMs > 0) await new Promise((r) => setTimeout(r, sleepMs));
+    onProgress?.(63 + Math.round((i + 1) / frameBlobUrls.length * 35), `Encoding ${label}…`);
+  }
+  const stopTarget = recordingStart + exactDurationMs;
+  const stopSleepMs = stopTarget - performance.now();
+  if (stopSleepMs > 0) await new Promise((r) => setTimeout(r, stopSleepMs));
+  recorder.stop();
+  await stopped;
+  onProgress?.(100, "Done!");
+  return new Blob(chunks, { type: mimeType });
+}
+const FOLDER_ICON = new URL("/folder-icon.png", import.meta.url).href;
+const LOGO_MARK = new URL("/logo-mark.png", import.meta.url).href;
 const EASE = "cubic-bezier(0.4, 0.0, 0.2, 1)";
-function LogoMark({ size = 40 }) {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: LOGO_MARK, alt: "Lottiney", style: { width: size, height: size, objectFit: "contain" } });
+function LogoAnimation({ size = 48 }) {
+  const [animData, setAnimData] = reactExports.useState(null);
+  const containerRef = reactExports.useRef(null);
+  const animRef = reactExports.useRef(null);
+  const timerRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    fetch("logo-animation.json").then((res) => res.json()).then((data2) => setAnimData(data2)).catch((err) => console.error("Failed to load logo animation", err));
+  }, []);
+  const scheduleNext = reactExports.useCallback(() => {
+    timerRef.current = setTimeout(() => {
+      animRef.current?.goToAndPlay(0, true);
+    }, 9e3);
+  }, []);
+  reactExports.useEffect(() => {
+    if (!containerRef.current || !animData) return;
+    containerRef.current.innerHTML = "";
+    animRef.current = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: "svg",
+      loop: false,
+      autoplay: false,
+      animationData: JSON.parse(JSON.stringify(animData))
+    });
+    animRef.current.addEventListener("complete", scheduleNext);
+    timerRef.current = setTimeout(() => {
+      animRef.current?.goToAndPlay(0, true);
+    }, 2500);
+    const handleClick = () => {
+      clearTimeout(timerRef.current);
+      animRef.current?.goToAndPlay(0, true);
+    };
+    const el = containerRef.current;
+    if (el) {
+      el.addEventListener("click", handleClick);
+    }
+    return () => {
+      clearTimeout(timerRef.current);
+      if (el) {
+        el.removeEventListener("click", handleClick);
+      }
+      if (animRef.current) {
+        animRef.current.destroy();
+      }
+    };
+  }, [animData, scheduleNext]);
+  if (!animData) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: LOGO_MARK, alt: "Lottiney", style: { width: size, height: size, objectFit: "contain", display: "block" } });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      ref: containerRef,
+      onClick: () => {
+        clearTimeout(timerRef.current);
+        animRef.current?.goToAndPlay(0, true);
+      },
+      style: { width: size, height: size, cursor: "pointer", display: "block" }
+    }
+  );
 }
 function useCountUp(target, duration = 900) {
   const [value2, setValue] = reactExports.useState(0);
@@ -29327,6 +30294,7 @@ function App() {
   const [stats, setStats] = reactExports.useState(null);
   const [isDragging, setIsDragging] = reactExports.useState(false);
   const [resultVisible, setResultVisible] = reactExports.useState(false);
+  const [showExport, setShowExport] = reactExports.useState(false);
   const fileInputRef = reactExports.useRef(null);
   const reducePct = useCountUp(resultVisible ? stats?.reductionPercentage : null, 900);
   const handleFile = reactExports.useCallback((file) => {
@@ -29372,13 +30340,48 @@ function App() {
       setOriginalData(null);
       setCleanedData(null);
       setStats(null);
+      setShowExport(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }, 320);
+  };
+  const handleExportOptions = async (options, setProgress) => {
+    if (!cleanedData && !originalData) return;
+    const targetData = cleanedData || originalData;
+    try {
+      let blob;
+      const exportOptions = {
+        fps: parseInt(options.fps, 10),
+        resolution: options.resolution,
+        transparent: options.transparent,
+        onProgress: (prog) => {
+          if (setProgress) setProgress(prog);
+        }
+      };
+      if (options.mode === "gif") {
+        blob = await exportAsGif(targetData, exportOptions);
+      } else {
+        blob = await exportAsVideo(targetData, exportOptions);
+      }
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      const baseName = originalFile?.name ? originalFile.name.replace(".json", "") : "animation";
+      const extension = options.mode === "gif" ? "gif" : "webm";
+      a.download = `${baseName}_${options.fps}fps.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
+    } catch (err) {
+      console.error(err);
+      const msg = err?.message || (typeof err === "string" ? err : "Unknown error — check browser console for details");
+      alert("Failed to export: " + msg);
+    }
   };
   const handleDownload = () => {
     if (!cleanedData) return;
     const a = document.createElement("a");
     a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cleanedData));
-    a.download = `clean_${originalFile?.name || "animation.json"}`;
+    a.download = `Clean_${originalFile?.name || "animation.json"}`;
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -29399,6 +30402,8 @@ function App() {
   }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
     width: "100%",
     maxWidth: isDone ? "860px" : "440px",
+    margin: "auto",
+    // allows scrolling while keeping top/bottom padding
     background: "linear-gradient(160deg, rgba(255,255,255,0.97) 0%, rgba(255,248,244,0.97) 100%)",
     backdropFilter: "blur(24px)",
     WebkitBackdropFilter: "blur(24px)",
@@ -29413,7 +30418,7 @@ function App() {
     gap: 0
   }, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { style: { display: "flex", flexDirection: "column", alignItems: "center", marginBottom: 28 }, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(LogoMark, { size: 48 }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(LogoAnimation, { size: 48 }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { style: {
         margin: "12px 0 6px",
         fontFamily: '"Outfit", sans-serif',
@@ -29472,7 +30477,7 @@ function App() {
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
       width: "100%",
       overflow: "hidden",
-      maxHeight: isDone ? "900px" : "0px",
+      maxHeight: isDone ? "3500px" : "0px",
       opacity: isDone ? 1 : 0,
       transition: [
         `max-height 480ms ${EASE}`,
@@ -29494,8 +30499,8 @@ function App() {
         transform: resultVisible ? "translateY(0) scale(1)" : "translateY(14px) scale(0.96)",
         transition: `opacity 300ms ${EASE}, transform 380ms ${EASE}`
       }, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(LabelledPreview, { label: "ORIGINAL", animationData: originalData, size: formatBytes$1(stats?.originalSize), delay: 0, visible: resultVisible }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(LabelledPreview, { label: "OPTIMISED", animationData: cleanedData, size: formatBytes$1(stats?.cleanSize), delay: 80, visible: resultVisible, highlighted: true })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(LabelledPreview, { label: "ORIGINAL", animationData: originalData, size: formatBytes(stats?.originalSize), delay: 0, visible: resultVisible }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(LabelledPreview, { label: "OPTIMISED", animationData: cleanedData, size: formatBytes(stats?.cleanSize), delay: 80, visible: resultVisible, highlighted: true })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
         marginTop: 36,
@@ -29518,13 +30523,70 @@ function App() {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { fontSize: 12, fontWeight: 700, color: "#AFA193", textTransform: "uppercase", letterSpacing: "0.12em", margin: 0 }, children: "Reduction in Size" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { style: {
         marginTop: 28,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 12,
         opacity: resultVisible ? 1 : 0,
         transform: resultVisible ? "translateY(0)" : "translateY(10px)",
         transition: `opacity 300ms 280ms ${EASE}, transform 360ms 280ms ${EASE}`
-      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(PhysicsButton, { onClick: handleDownload, icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { style: { width: 20, height: 20 } }), children: "Download Lottie" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { marginTop: 16, opacity: resultVisible ? 1 : 0, transition: `opacity 300ms 340ms ${EASE}` }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+      }, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(PhysicsButton, { onClick: handleDownload, icon: /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { style: { width: 20, height: 20 } }), children: "Download Lottie" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+          overflow: "hidden",
+          maxHeight: showExport ? "0px" : "40px",
+          opacity: showExport ? 0 : 1,
+          transition: `max-height 300ms ${EASE}, opacity 300ms ${EASE}`,
+          display: "flex",
+          alignItems: "center"
+        }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowExport(true),
+            style: {
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#AFA193",
+              fontFamily: '"Outfit", sans-serif',
+              transition: `color 200ms ${EASE}`,
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+              padding: "4px 8px"
+            },
+            onMouseEnter: (e) => e.currentTarget.style.color = "#F26D3D",
+            onMouseLeave: (e) => e.currentTarget.style.color = "#AFA193",
+            children: [
+              "Export as Gifs/Video ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { fontSize: 14 }, children: ">" })
+            ]
+          }
+        ) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        display: "grid",
+        gridTemplateRows: showExport ? "1fr" : "0fr",
+        transition: `grid-template-rows 400ms ${EASE}`,
+        width: "100%"
+      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        overflow: showExport ? "visible" : "hidden",
+        // prevent child escape while 0fr
+        opacity: showExport ? 1 : 0,
+        marginTop: showExport ? 24 : 0,
+        transition: `opacity 300ms ${showExport ? "100ms" : "0ms"} ${EASE}, margin-top 400ms ${EASE}`,
+        display: "flex",
+        justifyContent: "center"
+      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExportWindowPreview, { onExport: handleExportOptions }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: {
+        marginTop: 32,
+        opacity: resultVisible ? 1 : 0,
+        transition: `opacity 300ms 340ms ${EASE}`
+      }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
         "button",
         {
           onClick: resetApp,
@@ -29532,15 +30594,17 @@ function App() {
             background: "none",
             border: "none",
             cursor: "pointer",
-            fontSize: 14,
-            fontWeight: 600,
+            fontSize: 10,
+            fontWeight: 700,
             color: "#AFA193",
             fontFamily: '"Outfit", sans-serif',
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
             transition: `color 200ms ${EASE}`
           },
           onMouseEnter: (e) => e.currentTarget.style.color = "#F26D3D",
           onMouseLeave: (e) => e.currentTarget.style.color = "#AFA193",
-          children: "Process another file"
+          children: "OPTIMISE ANOTHER FILE"
         }
       ) })
     ] })
@@ -29634,7 +30698,7 @@ function DropZone({ appState, isDragging, originalFile, fileInputRef, onInputCha
               justifyContent: "center",
               gap: 10
             }, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatBytes$1(originalFile?.size) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatBytes(originalFile?.size) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { style: { color: "#D4C8BC" }, children: "·" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "button",
@@ -29754,103 +30818,132 @@ function LabelledPreview({ label, animationData, size, delay, visible, highlight
 const _s = document.createElement("style");
 _s.textContent = "@keyframes spin { to { transform: rotate(360deg); } }";
 document.head.appendChild(_s);
-function formatBytes(bytes) {
-  if (!bytes || bytes === 0) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+var define_process_env_default = {};
+var name = "@vercel/analytics";
+var version = "1.6.1";
+var initQueue = () => {
+  if (window.va) return;
+  window.va = function a(...params) {
+    (window.vaq = window.vaq || []).push(params);
+  };
+};
+function isBrowser() {
+  return typeof window !== "undefined";
 }
-function PreviewDemo() {
-  const [animationData, setAnimationData] = reactExports.useState(null);
-  const [fileSize, setFileSize] = reactExports.useState(null);
-  const [isDragging, setIsDragging] = reactExports.useState(false);
-  function handleFile(file) {
-    if (!file || !file.name.endsWith(".json")) return;
-    setFileSize(file.size);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        setAnimationData(JSON.parse(e.target.result));
-      } catch {
-        alert("Invalid Lottie JSON");
-      }
-    };
-    reader.readAsText(file);
+function detectEnvironment() {
+  try {
+    const env = "production";
+    if (env === "development" || env === "test") ;
+  } catch (e) {
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "div",
-    {
-      style: {
-        minHeight: "100vh",
-        background: "#F4EDE6",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "40px 24px",
-        fontFamily: "sans-serif",
-        gap: "32px"
-      },
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { style: { fontSize: 28, fontWeight: 700, color: "#4A3C31", margin: 0 }, children: "Preview Window Demo" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "label",
-          {
-            onDragOver: (e) => {
-              e.preventDefault();
-              setIsDragging(true);
-            },
-            onDragLeave: () => setIsDragging(false),
-            onDrop: (e) => {
-              e.preventDefault();
-              setIsDragging(false);
-              handleFile(e.dataTransfer.files[0]);
-            },
-            style: {
-              border: `2px dashed ${isDragging ? "#ff6c43" : "#D4C8BC"}`,
-              borderRadius: 16,
-              padding: "24px 48px",
-              cursor: "pointer",
-              background: isDragging ? "rgba(255,108,67,0.05)" : "#fff",
-              color: "#AFA193",
-              fontSize: 14,
-              fontWeight: 600,
-              textAlign: "center",
-              transition: "all 0.2s"
-            },
-            children: [
-              "📂 Drop a Lottie .json here, or click to browse",
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "file",
-                  accept: ".json",
-                  style: { display: "none" },
-                  onChange: (e) => handleFile(e.target.files[0])
-                }
-              )
-            ]
-          }
-        ),
-        animationData && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          PreviewWindow,
-          {
-            animationData,
-            label: "OPTIMISED",
-            size: fileSize ? formatBytes(fileSize) : "",
-            padding: 16
-          }
-        ),
-        !animationData && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { style: { color: "#C8A898", fontSize: 13 }, children: "Upload a Lottie file above to see the preview ↑" })
-      ]
+  return "production";
+}
+function setMode(mode = "auto") {
+  if (mode === "auto") {
+    window.vam = detectEnvironment();
+    return;
+  }
+  window.vam = mode;
+}
+function getMode() {
+  const mode = isBrowser() ? window.vam : detectEnvironment();
+  return mode || "production";
+}
+function isDevelopment() {
+  return getMode() === "development";
+}
+function getScriptSrc(props) {
+  if (props.scriptSrc) {
+    return props.scriptSrc;
+  }
+  if (isDevelopment()) {
+    return "https://va.vercel-scripts.com/v1/script.debug.js";
+  }
+  if (props.basePath) {
+    return `${props.basePath}/insights/script.js`;
+  }
+  return "/_vercel/insights/script.js";
+}
+function inject(props = {
+  debug: true
+}) {
+  var _a;
+  if (!isBrowser()) return;
+  setMode(props.mode);
+  initQueue();
+  if (props.beforeSend) {
+    (_a = window.va) == null ? void 0 : _a.call(window, "beforeSend", props.beforeSend);
+  }
+  const src = getScriptSrc(props);
+  if (document.head.querySelector(`script[src*="${src}"]`)) return;
+  const script = document.createElement("script");
+  script.src = src;
+  script.defer = true;
+  script.dataset.sdkn = name + (props.framework ? `/${props.framework}` : "");
+  script.dataset.sdkv = version;
+  if (props.disableAutoTrack) {
+    script.dataset.disableAutoTrack = "1";
+  }
+  if (props.endpoint) {
+    script.dataset.endpoint = props.endpoint;
+  } else if (props.basePath) {
+    script.dataset.endpoint = `${props.basePath}/insights`;
+  }
+  if (props.dsn) {
+    script.dataset.dsn = props.dsn;
+  }
+  script.onerror = () => {
+    const errorMessage = isDevelopment() ? "Please check if any ad blockers are enabled and try again." : "Be sure to enable Web Analytics for your project and deploy again. See https://vercel.com/docs/analytics/quickstart for more information.";
+    console.log(
+      `[Vercel Web Analytics] Failed to load script from ${src}. ${errorMessage}`
+    );
+  };
+  if (isDevelopment() && props.debug === false) {
+    script.dataset.debug = "false";
+  }
+  document.head.appendChild(script);
+}
+function pageview({
+  route,
+  path
+}) {
+  var _a;
+  (_a = window.va) == null ? void 0 : _a.call(window, "pageview", { route, path });
+}
+function getBasePath() {
+  if (typeof process === "undefined" || typeof define_process_env_default === "undefined") {
+    return void 0;
+  }
+  return define_process_env_default.REACT_APP_VERCEL_OBSERVABILITY_BASEPATH;
+}
+function Analytics(props) {
+  reactExports.useEffect(() => {
+    var _a;
+    if (props.beforeSend) {
+      (_a = window.va) == null ? void 0 : _a.call(window, "beforeSend", props.beforeSend);
     }
-  );
+  }, [props.beforeSend]);
+  reactExports.useEffect(() => {
+    inject({
+      framework: props.framework || "react",
+      basePath: props.basePath ?? getBasePath(),
+      ...props.route !== void 0 && { disableAutoTrack: true },
+      ...props
+    });
+  }, []);
+  reactExports.useEffect(() => {
+    if (props.route && props.path) {
+      pageview({ route: props.route, path: props.path });
+    }
+  }, [props.route, props.path]);
+  return null;
 }
 {
-  document.title = "Lottieny";
+  document.title = "Lottiney";
 }
-const isPreview = new URLSearchParams(window.location.search).has("preview");
 clientExports.createRoot(document.getElementById("root")).render(
-  /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.StrictMode, { children: isPreview ? /* @__PURE__ */ jsxRuntimeExports.jsx(PreviewDemo, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}) })
+  /* @__PURE__ */ jsxRuntimeExports.jsxs(reactExports.StrictMode, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(App, {}),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Analytics, {})
+  ] })
 );
