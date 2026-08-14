@@ -30207,8 +30207,8 @@ async function exportAsVideo(animationData, { fps = 30, resolution = "720p", tra
   onProgress?.(100, "Done!");
   return new Blob(chunks, { type: mimeType });
 }
-const FOLDER_ICON = new URL("/folder-icon.png", import.meta.url).href;
-const LOGO_MARK = new URL("/logo-mark.png", import.meta.url).href;
+const FOLDER_ICON = new URL("" + new URL("../folder-icon.png", import.meta.url).href, import.meta.url).href;
+const LOGO_MARK = new URL("" + new URL("../logo-mark.png", import.meta.url).href, import.meta.url).href;
 const EASE = "cubic-bezier(0.4, 0.0, 0.2, 1)";
 function LogoAnimation({ size = 48 }) {
   const [animData, setAnimData] = reactExports.useState(null);
